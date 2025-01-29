@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Models Comparison</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --highlight-color: #e74c3c;
+            --secondary-color: #34495e;
+            --service-color: #9b59b6;
+            --service-hover: #8e44ad;
+            --attribute-color: #27ae60;
+            --attribute-hover: #219a52;
+            --drag-handle-color: #bdc3c7;
+            --cell-padding: 12px;
+            --handle-width: 24px;
+            --border-color: #ddd;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 20px;
+            color: var(--primary-color);
+            line-height: 1.4;
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 300px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .control-group h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .control-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .control-actions button {
+            font-size: 0.8em;
+            padding: 4px 8px;
+            background: #fff;
+            color: var(--secondary-color);
+            border: 1px solid #ddd;
+        }
+
+        .control-actions button:hover {
+            background: #f8f9fa;
+        }
+        
+        .search-box {
+            padding: 8px;
+            width: 100%;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        button {
+            padding: 8px 16px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background: var(--secondary-color);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            position: relative;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: white;
+            margin-top: 20px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: max-content;
+            background: white;
+            table-layout: fixed;
+        }
+
+        th, td {
+            padding: var(--cell-padding);
+            text-align: left;
+            border: 1px solid var(--border-color);
+            background: white;
+            position: relative;
+            white-space: normal;
+            word-wrap: break-word;
+            vertical-align: top;
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 200px;
+            min-width: 200px;
+            max-width: 200px;
+        }
+
+        /* Service column */
+        th:first-child,
+        td:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 2;
+            background: white;
+            border-right: 2px solid var(--border-color);
+            width: 180px;
+            min-width: 180px;
+            max-width: 180px;
+        }
+
+        /* Header row */
+        thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background: #f8f9fa;
+            font-weight: 600;
+            padding: 16px;
+            white-space: normal;
+            word-wrap: break-word;
+            height: auto;
+            min-height: 60px;
+            vertical-align: middle;
+        }
+
+        /* Service header cell */
+        thead th:first-child {
+            z-index: 3;
+            background: var(--primary-color);
+            color: white;
+            top: 0;
+            left: 0;
+        }
+
+        /* Cell content */
+        .check, .cross {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 24px;
+        }
+        
+        .check {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .cross {
+            color: #e74c3c;
+        }
+
+        td {
+            padding: 12px 16px;
+            min-height: 48px;
+        }
+
+        /* Drag and drop feedback */
+        .dragging {
+            opacity: 0.5;
+            background: #f8f9fa !important;
+        }
+
+        .drag-over {
+            border: 2px dashed var(--primary-color) !important;
+        }
+
+        .toggle-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .toggle-item {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .toggle-item:hover {
+            border-color: var(--secondary-color);
+        }
+
+        /* Filtered attribute styles */
+        th.filtered {
+            background-color: #f0f9ff !important;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        th[onclick] {
+            transition: background-color 0.2s;
+        }
+
+        th[onclick]:hover {
+            background-color: #f5f5f5;
+        }
+
+        #service-toggles .toggle-item.active {
+            background: var(--service-color);
+            color: white;
+            border-color: var(--service-color);
+        }
+
+        #service-toggles .toggle-item.active:hover {
+            background: var(--service-hover);
+        }
+
+        #attribute-toggles .toggle-item.active {
+            background: var(--attribute-color);
+            color: white;
+            border-color: var(--attribute-color);
+        }
+
+        #attribute-toggles .toggle-item.active:hover {
+            background: var(--attribute-hover);
+        }
+
+        @media (max-width: 768px) {
+            th, td {
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <div class="control-group">
+            <h3>Search and View</h3>
+            <input type="text" class="search-box" placeholder="Search models...">
+        </div>
+        <div class="control-group">
+            <h3>
+                Services
+                <div class="control-actions">
+                    <button class="show-all-services">Show All</button>
+                    <button class="hide-all-services">Hide All</button>
+                </div>
+            </h3>
+            <div class="toggle-list" id="service-toggles">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+        <div class="control-group">
+            <h3>
+                Attributes
+                <div class="control-actions">
+                    <button class="show-all-attributes">Show All</button>
+                    <button class="hide-all-attributes">Hide All</button>
+                </div>
+            </h3>
+            <div class="toggle-list" id="attribute-toggles">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <!-- Headers will be dynamically populated -->
+            </thead>
+            <tbody>
+                <!-- Content will be dynamically populated -->
+            </tbody>
+        </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html> 
