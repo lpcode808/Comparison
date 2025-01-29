@@ -134,10 +134,23 @@
             left: 0;
             z-index: 2;
             background: white;
-            border-right: 2px solid var(--border-color);
+            border-right: 2px solid var(--primary-color);
             width: 180px;
             min-width: 180px;
             max-width: 180px;
+        }
+
+        /* Add a pseudo-element for persistent border */
+        th:first-child::after,
+        td:first-child::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -2px;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--primary-color);
+            z-index: 3;
         }
 
         /* Header row */
@@ -270,13 +283,23 @@
             color: var(--secondary-color);
         }
 
-        .instructions-toggle::after {
-            content: '▼';
-            font-size: 0.8em;
+        .instructions-toggle strong {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .instructions-toggle.collapsed strong {
+            color: var(--secondary-color);
+        }
+
+        .instructions-toggle strong::first-letter {
+            display: inline-block;
+            transform: rotate(0deg);
             transition: transform 0.2s;
         }
 
-        .instructions-toggle.collapsed::after {
+        .instructions-toggle.collapsed strong::first-letter {
             transform: rotate(-90deg);
         }
 
@@ -304,17 +327,28 @@
     <div class="controls">
         <div class="control-group" style="flex-basis: 100%;">
             <p style="font-style: italic; color: var(--secondary-color); margin-bottom: 15px;">
-                Data sourced from <a href="https://www.oneusefulthing.org/p/which-ai-to-use-now-an-updated-opinionated" target="_blank">Ethan Mollick's AI comparison guide</a>.
+                Data originally sourced from <a href="https://www.oneusefulthing.org/p/which-ai-to-use-now-an-updated-opinionated" target="_blank">Ethan Mollick's AI comparison guide</a>, but modifications made.
             </p>
             <div class="instructions-toggle">
-                <strong>How to use this comparison tool</strong>
+                <strong>▶ How to use this comparison tool</strong>
             </div>
-            <div class="instructions-content">
+            <div class="instructions-content collapsed">
                 <p style="margin: 15px 0; line-height: 1.6;">
                     • Click on boolean attributes (✓/✗) to filter models by capability<br>
                     • Use the search box to find specific features or characteristics<br>
                     • Toggle services and attributes using the buttons above to customize your view<br>
                     • Scroll horizontally to see all models and their capabilities
+                </p>
+            </div>
+            <div class="instructions-toggle">
+                <strong>▶ Other notes</strong>
+            </div>
+            <div class="instructions-content collapsed">
+                <p style="margin: 15px 0; line-height: 1.6;">
+                    • Yes, sometimes I'll mix the model vs the front-end tool<br>
+                    • If you have improvements, fork it and make it better!<br>
+                    • I'm not a professional software developer, so if you have suggestions, <a href="https://acaiberry.substack.com/">please let me know!</a><br>
+                
                 </p>
             </div>
         </div>
@@ -345,6 +379,35 @@
         <div class="control-group">
             <h3>Search and View</h3>
             <input type="text" class="search-box" placeholder="Search models...">
+            <div class="instructions-toggle collapsed">
+                <strong>▶ Image Generation</strong>
+            </div>
+            <div class="instructions-content collapsed">
+                <p style="margin: 15px 0; line-height: 1.6;">
+                    • Adobe Firefly (vector within Illustrator)<br>
+                    • Canva Magic<br>
+                    • MidJourney<br>
+                    • Flux <br>
+                    • Ideogram
+                </p>
+            </div>
+            <div class="instructions-toggle collapsed">
+                <strong>▶ Video Generation</strong>
+            </div>
+            <div class="instructions-content collapsed">
+                <p style="margin: 15px 0; line-height: 1.6;">
+                    • RunwayML
+                </p>
+            </div>
+            <div class="instructions-toggle collapsed">
+                <strong>▶ Audio Generation</strong>
+            </div>
+            <div class="instructions-content collapsed">
+                <p style="margin: 15px 0; line-height: 1.6;">
+                    • ElevenLabs<br>
+                    • Google's NotebookLM Audio Overview
+                </p>
+            </div>
         </div>
     </div>
     <div class="table-container">
@@ -356,6 +419,9 @@
                 <!-- Content will be dynamically populated -->
             </tbody>
         </table>
+    </div>
+    <div style="position: fixed; bottom: 10px; right: 10px; font-size: 0.8em; color: var(--secondary-color); background: rgba(255,255,255,0.9); padding: 5px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+        Last updated: 2025-01-29 06:54:28 GMT
     </div>
     <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
     <script src="app.js"></script>

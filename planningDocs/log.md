@@ -1,5 +1,92 @@
 # Development Log
 
+## 2025-01-29 06:54:28 GMT - Feature Additions and Data Updates
+
+### Changes Made:
+1. New Attribute:
+   - Added 'sharesThreads' boolean field to all models
+   - Set to true for OpenAI models, Grok, and Perplexity
+   - Set to false for all other services
+
+2. New Information Section:
+   - Added "Audio Generation" toggle with tools:
+     • ElevenLabs
+     • Google's NotebookLM Audio Overview
+
+3. Data Structure:
+   - Updated attributes list to include sharesThreads
+   - Maintained consistent ordering of attributes
+   - Updated timestamp display
+
+## 2025-01-29 06:45:56 GMT - UI Polish and Timestamp Addition
+
+### Changes Made:
+1. Toggle Arrow Improvements:
+   - Fixed arrow rotation behavior
+   - Now points right (0deg) when collapsed
+   - Points down (90deg) when expanded
+   - Smoother transition animation
+
+2. Added Timestamp Feature:
+   - Added GMT timestamp to bottom-right corner
+   - Semi-transparent background for better visibility
+   - Updates with each deployment
+   - Styled to match overall design theme
+
+## 2025-01-28 20:44:23 HST - UI Enhancements and Bug Fixes
+
+### Changes Made:
+1. Instructions Panel Improvements:
+   - Added "Other Notes" toggle section with helpful tips
+   - Fixed toggle functionality for all instruction sections
+   - Improved arrow rotation animation (points down when expanded)
+   - Made all toggles start in collapsed state
+
+2. New Information Sections:
+   - Added "Image Generation" toggle with list of tools:
+     • Adobe Firefly (vector within Illustrator)
+     • Canva Magic
+     • MidJourney
+     • Ideogram
+   - Added "Video Generation" toggle with list of tools:
+     • RunwayML
+
+3. Technical Fixes:
+   - Updated JavaScript to handle multiple toggles properly
+   - Fixed CSS transitions for smooth animations
+   - Improved toggle state management
+   - Enhanced visual feedback for expanded/collapsed states
+
+## 2025-01-28 20:38:51 HST - UI and Functionality Improvements
+
+### Changes Made:
+1. Attribute Sorting Enhancement:
+   - Changed from filtering to sorting behavior
+   - Implemented three-state sorting for boolean values:
+     • True values first
+     • False values first
+     • Text descriptions between true/false values
+   - Improved visual feedback for sort state
+
+2. Layout Improvements:
+   - Fixed sticky first column behavior
+   - Added persistent colored border (primary color)
+   - Used pseudo-elements for reliable border display during scroll
+   - Improved overall table structure
+
+3. Instructions and Attribution:
+   - Added collapsible instructions panel
+   - Added attribution to Ethan Mollick's comparison guide
+   - Improved instructions clarity with bullet points
+   - Made instructions toggle smooth with CSS transitions
+
+4. Data Structure Updates:
+   - Added generatesVideo field to all models
+   - Reordered attributes for better logical grouping
+   - Fixed data consistency across models
+
+These changes improve both the functionality and visual polish of the comparison tool while maintaining its clean, efficient interface.
+
 ## 2025-01-27 15:29:57 HST - Phase 1 Planning
 
 ### Initial Structure and Approach

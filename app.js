@@ -12,6 +12,7 @@ const modelData = [
         seesImages: true,
         seesVideo: "In Live Mode",
         readsDocs: true,
+        sharesThreads: true,
         personality: "Polished and efficient in text. In live mode, expressive and adaptive.",
         superpower: "Live mode, most versatile set of features and capabilities"
     },
@@ -22,12 +23,13 @@ const modelData = [
         reasoning: true,
         webAccess: false,
         generatesImages: false,
-        generatesVideo: false,
+        generatesVideo: "Sora",
         executesCode: true,
         dataAnalysis: false,
         seesImages: true,
         seesVideo: false,
         readsDocs: false,
+        sharesThreads: true,
         personality: "Methodical and analytical",
         superpower: "Very powerful model for complex reasoning tasks, particularly in science, coding, and mathematics"
     },
@@ -44,6 +46,7 @@ const modelData = [
         seesImages: true,
         seesVideo: false,
         readsDocs: true,
+        sharesThreads: false,
         personality: "Since it uses different models behind the scenes, a little inconsistent",
         superpower: "Works well with Microsoft products and services"
     },
@@ -60,6 +63,7 @@ const modelData = [
         seesImages: true,
         seesVideo: false,
         readsDocs: true,
+        sharesThreads: false,
         personality: "Clever and friendly",
         superpower: "Often the most creative and socially engaging model"
     },
@@ -70,12 +74,13 @@ const modelData = [
         reasoning: true,
         webAccess: true,
         generatesImages: "Imagen-3",
-        generatesVideo: false,
+        generatesVideo: "Veo (Beta)",
         executesCode: "Limited",
         dataAnalysis: "Limited",
         seesImages: true,
         seesVideo: true,
         readsDocs: true,
+        sharesThreads: false,
         personality: "Helpful and a bit bland",
         superpower: "Wide variety of features, good connections with search"
     },
@@ -92,6 +97,7 @@ const modelData = [
         seesImages: true,
         seesVideo: false,
         readsDocs: true,
+        sharesThreads: true,
         personality: "Sarcastic and \"fun\" (though you can tone that down)",
         superpower: "Powerful model integrated tightly with X/TWitter"
     },
@@ -108,8 +114,26 @@ const modelData = [
         seesImages: true,
         seesVideo: false,
         readsDocs: "Limited",
+        sharesThreads: false,
         personality: "Neurotically helpful, warm",
         superpower: "Remarkably cheap and powerful model out of China"
+    },
+    {
+        service: "Perplexity",
+        bestModel: "Choose based on preference",
+        liveMode: false,
+        reasoning: true,
+        webAccess: true,
+        generatesImages: true,
+        generatesVideo: false,
+        executesCode: false,
+        dataAnalysis: true,
+        seesImages: true,
+        seesVideo: false,
+        readsDocs: true,
+        sharesThreads: true,
+        personality: "Informative and concise",
+        superpower: "Select the LLM of choice, and cites web sources well"
     }
 ];
 
@@ -127,6 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'executesCode',
         'reasoning',
         'liveMode',
+        'sharesThreads',
         'bestModel'
     ];
     
@@ -148,20 +173,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function filterByAttribute(attribute) {
         if (currentFilter.attribute === attribute) {
-            // Toggle between true and false only
+            // Toggle between true-first and false-first
             currentFilter.showTrue = !currentFilter.showTrue;
         } else {
             currentFilter.attribute = attribute;
             currentFilter.showTrue = true;
         }
 
-        // Apply the filter
-        visibleServices = new Set(
-            services.filter(service => {
-                const value = modelData.find(item => item.service === service)[currentFilter.attribute];
-                return typeof value === 'boolean' && value === currentFilter.showTrue;
-            })
-        );
+        // Sort services based on the current filter
+        const sortedServices = [...services].sort((a, b) => {
+            const valueA = modelData.find(item => item.service === a)[currentFilter.attribute];
+            const valueB = modelData.find(item => item.service === b)[currentFilter.attribute];
+            
+            const isABoolean = typeof valueA === 'boolean';
+            const isBBoolean = typeof valueB === 'boolean';
+            
+            // If both are boolean
+            if (isABoolean && isBBoolean) {
+                if (currentFilter.showTrue) {
+                    return valueA === valueB ? 0 : valueA ? -1 : 1;
+                } else {
+                    return valueA === valueB ? 0 : valueA ? 1 : -1;
+                }
+            }
+            
+            // If one is boolean and one is text
+            if (isABoolean && !isBBoolean) {
+                // If showing true first: true > text > false
+                if (currentFilter.showTrue) {
+                    return valueA ? -1 : 1;
+                }
+                // If showing false first: false > text > true
+                else {
+                    return valueA ? 1 : -1;
+                }
+            }
+            if (!isABoolean && isBBoolean) {
+                // If showing true first: true > text > false
+                if (currentFilter.showTrue) {
+                    return valueB ? 1 : -1;
+                }
+                // If showing false first: false > text > true
+                else {
+                    return valueB ? -1 : 1;
+                }
+            }
+            
+            // If both are text, keep original order
+            return 0;
+        });
+
+        // Update the services order
+        services.length = 0;
+        services.push(...sortedServices);
+        visibleServices = new Set(services);
         renderTable();
     }
 
@@ -317,17 +382,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize search
     document.querySelector('.search-box').addEventListener('input', filterBySearch);
 
-    // Initialize instructions toggle
-    const instructionsToggle = document.querySelector('.instructions-toggle');
-    const instructionsContent = document.querySelector('.instructions-content');
-    
-    instructionsToggle.addEventListener('click', () => {
-        instructionsToggle.classList.toggle('collapsed');
-        instructionsContent.classList.toggle('collapsed');
+    // Add event listeners for instruction toggles
+    document.querySelectorAll('.instructions-toggle').forEach(toggle => {
+        toggle.addEventListener('click', () => {
+            toggle.classList.toggle('collapsed');
+            const content = toggle.nextElementSibling;
+            if (content && content.classList.contains('instructions-content')) {
+                content.classList.toggle('collapsed');
+            }
+        });
     });
-
-    // Start with instructions collapsed
-    instructionsToggle.click();
 
     // Initialize toggles and render table
     initializeToggles();
