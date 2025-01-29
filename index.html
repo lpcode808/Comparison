@@ -257,13 +257,66 @@
                 min-width: 100px;
             }
         }
+
+        .instructions-toggle {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .instructions-toggle:hover {
+            color: var(--secondary-color);
+        }
+
+        .instructions-toggle::after {
+            content: '▼';
+            font-size: 0.8em;
+            transition: transform 0.2s;
+        }
+
+        .instructions-toggle.collapsed::after {
+            transform: rotate(-90deg);
+        }
+
+        .instructions-content {
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            margin: 0;
+            padding: 0;
+        }
+
+        .instructions-content.collapsed {
+            max-height: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .instructions-content p {
+            margin: 15px 0;
+            padding: 0;
+        }
     </style>
 </head>
 <body>
     <div class="controls">
-        <div class="control-group">
-            <h3>Search and View</h3>
-            <input type="text" class="search-box" placeholder="Search models...">
+        <div class="control-group" style="flex-basis: 100%;">
+            <p style="font-style: italic; color: var(--secondary-color); margin-bottom: 15px;">
+                Data sourced from <a href="https://www.oneusefulthing.org/p/which-ai-to-use-now-an-updated-opinionated" target="_blank">Ethan Mollick's AI comparison guide</a>.
+            </p>
+            <div class="instructions-toggle">
+                <strong>How to use this comparison tool</strong>
+            </div>
+            <div class="instructions-content">
+                <p style="margin: 15px 0; line-height: 1.6;">
+                    • Click on boolean attributes (✓/✗) to filter models by capability<br>
+                    • Use the search box to find specific features or characteristics<br>
+                    • Toggle services and attributes using the buttons above to customize your view<br>
+                    • Scroll horizontally to see all models and their capabilities
+                </p>
+            </div>
         </div>
         <div class="control-group">
             <h3>
@@ -288,6 +341,10 @@
             <div class="toggle-list" id="attribute-toggles">
                 <!-- Dynamically populated -->
             </div>
+        </div>
+        <div class="control-group">
+            <h3>Search and View</h3>
+            <input type="text" class="search-box" placeholder="Search models...">
         </div>
     </div>
     <div class="table-container">

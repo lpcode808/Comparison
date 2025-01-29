@@ -108,7 +108,19 @@ const modelData = [
 
 document.addEventListener('DOMContentLoaded', () => {
     // Get all attributes except 'service' for rows
-    const attributes = Object.keys(modelData[0]).filter(key => key !== 'service');
+    const attributes = [
+        'personality',
+        'webAccess',
+        'superpower',
+        'readsDocs',
+        'seesImages',
+        'generatesImages',
+        'seesVideo',
+        'executesCode',
+        'reasoning',
+        'liveMode',
+        'bestModel'
+    ];
     
     // Get all services for columns
     const services = modelData.map(item => item.service);
@@ -296,6 +308,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize search
     document.querySelector('.search-box').addEventListener('input', filterBySearch);
+
+    // Initialize instructions toggle
+    const instructionsToggle = document.querySelector('.instructions-toggle');
+    const instructionsContent = document.querySelector('.instructions-content');
+    
+    instructionsToggle.addEventListener('click', () => {
+        instructionsToggle.classList.toggle('collapsed');
+        instructionsContent.classList.toggle('collapsed');
+    });
+
+    // Start with instructions collapsed
+    instructionsToggle.click();
 
     // Initialize toggles and render table
     initializeToggles();
