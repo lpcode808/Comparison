@@ -25,3 +25,7 @@ A simple, interactive web-based comparison tool for AI models. Features include:
 ## Development
 All styles are contained in index.html for simplicity. The main logic is in app.js.
 No build process is required - just edit and refresh the browser. 
+
+Created by <a href="https://acaiberry.substack.com/">Justin Lai</a>, Educational Technologist at the <a href="http://lapietra.edu"> La Pietra - Hawaii School for Girls</a>
+
+Learn how to do this at <a href="https://www.buildyourownapps.com/">buildyourownapps.com, promo code forthcoming</a>
