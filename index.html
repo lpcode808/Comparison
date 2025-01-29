@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Models Comparison</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗂️</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -18,10 +21,13 @@
             --cell-padding: 12px;
             --handle-width: 24px;
             --border-color: #ddd;
+            --main-font: "Archivo Narrow", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: var(--main-font);
+            font-optical-sizing: auto;
+            font-weight: 400;
             margin: 20px;
             color: var(--primary-color);
             line-height: 1.4;
@@ -322,6 +328,22 @@
             margin: 15px 0;
             padding: 0;
         }
+
+        h3 {
+            font-weight: 600;
+        }
+
+        th {
+            font-weight: 600;
+        }
+
+        .instructions-toggle strong {
+            font-weight: 500;
+        }
+
+        .toggle-item {
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -346,8 +368,9 @@
             </div>
             <div class="instructions-content collapsed">
                 <p style="margin: 15px 0; line-height: 1.6;">
-                    • Yes, sometimes I'll mix the model vs the front-end tool<br>
-                    • If you have improvements, fork it and make it better!<br>
+                    • Benchmarks don't affect everyday people's usage, so just tinker with it<br>
+                    • Start with free. Pick a scenario: <i>I'm stuck, I don't get it, It's so messy.</i> <br>
+                    • If you have improvements/complaints, fork it and make it better!<br>
                     • I'm <a href="https://www.lapietra.edu/portals/parent-portal/faculty-staff-directory?id=387597">not a professional software developer</a>, so if you have suggestions, <a href="https://acaiberry.substack.com/">please let me know!</a><br>
                     • <i>How did I learn?</i> Through <a href="https://www.buildyourownapps.com">Build Your Own Apps</a>, contact me for promo code
                 </p>
@@ -422,7 +445,7 @@
         </table>
     </div>
     <div style="position: fixed; bottom: 10px; right: 10px; font-size: 0.8em; color: var(--secondary-color); background: rgba(255,255,255,0.9); padding: 5px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-        Last updated: 2025-01-29 08:55:08 GMT
+        Last updated: 2025-01-29 09:15:53 GMT
     </div>
     <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
     <script src="app.js"></script>
