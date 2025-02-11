@@ -28,4 +28,4 @@ No build process is required - just edit and refresh the browser.
 
 Created by [Justin Lai](https://acaiberry.substack.com/), Educational Technologist at [La Pietra - Hawaii School for Girls](http://lapietra.edu), in Honolulu, Hawaii.
 
-Learn how to do this at [Build Your Own Apps](https://www.buildyourownapps.com) promo code forthcoming.
+Learn how to do this at [Build Your Own Apps](https://www.buildyourownapps.com) promo code forthcoming edu808

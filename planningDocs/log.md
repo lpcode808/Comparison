@@ -1,6 +1,23 @@
 # Development Log
 
-## 2025-01-29 09:15:53 GMT - Typography Update
+## 2025-02-11 00:18:29 GMT - Added Mistral (LeChat)
+
+### Changes Made:
+1. New Model Addition:
+   - Added Mistral (LeChat) to the comparison
+   - Included comprehensive capabilities:
+     • Advanced multilingual support
+     • Document analysis features
+     • Code interpretation
+     • Image generation via Flux Ultra
+   - Updated model data structure with all attributes
+   - Maintained consistent formatting
+
+## 2025-01-29 09:15:53 GMT - export update
+prompt: consolidate all files in this project folder into one called "export.md", separate each file by format heading one level with the title of the file. this is so that i can upload it somewhere else
+
+placing into deepseek in lex.pro
+
 
 ### Changes Made:
 1. Font Integration:

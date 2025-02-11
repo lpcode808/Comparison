@@ -1,5 +1,22 @@
 const modelData = [
     {
+        service: "Mistral (LeChat)",
+        bestModel: "Mistral Large 2 (123B)",
+        liveMode: false,
+        reasoning: true,
+        webAccess: true,
+        generatesImages: "Flux Ultra",
+        generatesVideo: false,
+        executesCode: true,
+        dataAnalysis: true,
+        seesImages: true,
+        seesVideo: false,
+        readsDocs: true,
+        sharesThreads: false,
+        personality: "Adaptive, multilingual, and efficient for both personal and professional tasks",
+        superpower: "Fastest inference speed (up to 1,000 words/sec), robust multilingualism, and enterprise-ready deployment"
+    },
+    {
         service: "OpenAI ChatGPT",
         bestModel: "GPT-4o",
         liveMode: "Full multimodal",
