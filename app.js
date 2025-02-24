@@ -84,7 +84,7 @@ const modelData = [
         generatesImages: false,
         generatesVideo: false,
         executesCode: true,
-        dataAnalysis: "Limited",
+        dataAnalysis: "Input CSV",
         seesImages: true,
         seesVideo: false,
         readsDocs: true,
@@ -176,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Get all attributes except 'service' for rows
     const attributes = [
         'personality',
+        'bestModel',
         'webAccess',
         'superpower',
         'readsDocs',
@@ -188,12 +189,21 @@ document.addEventListener('DOMContentLoaded', () => {
         'liveMode',
         'sharesThreads',
         'agentName',
-        'deepName',
-        'bestModel'
+        'deepName'
     ];
     
-    // Get all services for columns
-    const services = modelData.map(item => item.service);
+    // Get all services for columns, in specific order
+    const services = [
+        "OpenAI ChatGPT",
+        "OpenAI ChatGPT advanced",
+        "Anthropic Claude",
+        "Perplexity",
+        "Google Gemini",
+        "Microsoft Copilot",
+        "X.ai Grok (Twitter)",
+        "DeepSeek",
+        "Mistral (LeChat)"
+    ];
 
     let visibleServices = new Set(services);
     let visibleAttributes = new Set(attributes);
