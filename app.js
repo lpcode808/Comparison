@@ -14,7 +14,6 @@ const modelData = [
         readsDocs: true,
         sharesThreads: false,
         agentName: false,
-        deepName: false,
         personality: "Adaptive, multilingual, and efficient for both personal and professional tasks",
         superpower: "Fastest inference speed (up to 1,000 words/sec), robust multilingualism, and enterprise-ready deployment"
     },
@@ -33,7 +32,6 @@ const modelData = [
         readsDocs: true,
         sharesThreads: true,
         agentName: "Operator",
-        deepName: false,
         personality: "Polished and efficient in text. In live mode, expressive and adaptive.",
         superpower: "Live mode, most versatile set of features and capabilities"
     },
@@ -52,7 +50,6 @@ const modelData = [
         readsDocs: false,
         sharesThreads: true,
         agentName: false,
-        deepName: false,
         personality: "Methodical and analytical",
         superpower: "Very powerful model for complex reasoning tasks, particularly in science, coding, and mathematics"
     },
@@ -71,7 +68,6 @@ const modelData = [
         readsDocs: true,
         sharesThreads: false,
         agentName: false,
-        deepName: false,
         personality: "Since it uses different models behind the scenes, a little inconsistent",
         superpower: "Works well with Microsoft products and services"
     },
@@ -79,7 +75,7 @@ const modelData = [
         service: "Anthropic Claude",
         bestModel: "Claude 3.7",
         liveMode: false,
-        reasoning: true,
+        reasoning: "extended thinking mode",
         webAccess: false,
         generatesImages: false,
         generatesVideo: false,
@@ -89,8 +85,7 @@ const modelData = [
         seesVideo: false,
         readsDocs: true,
         sharesThreads: false,
-        agentName: "via API",
-        deepName: "extended thinking mode",
+        agentName: "computer use via API",
         personality: "Clever and friendly",
         superpower: "Often the most creative and socially engaging model"
     },
@@ -98,7 +93,7 @@ const modelData = [
         service: "Google Gemini",
         bestModel: "Gemini family",
         liveMode: "Voice only",
-        reasoning: true,
+        reasoning: "2.0 Flash Thinking",
         webAccess: true,
         generatesImages: "Imagen-3",
         generatesVideo: "Veo (Beta)",
@@ -109,7 +104,6 @@ const modelData = [
         readsDocs: true,
         sharesThreads: false,
         agentName: false,
-        deepName: "2.0 Flash Thinking",
         personality: "Helpful and a bit bland",
         superpower: "Wide variety of features, good connections with search"
     },
@@ -128,7 +122,6 @@ const modelData = [
         readsDocs: true,
         sharesThreads: true,
         agentName: false,
-        deepName: false,
         personality: "Sarcastic and \"fun\" (though you can tone that down)",
         superpower: "Powerful model integrated tightly with X/TWitter"
     },
@@ -147,7 +140,6 @@ const modelData = [
         readsDocs: "Limited",
         sharesThreads: false,
         agentName: false,
-        deepName: false,
         personality: "Neurotically helpful, warm",
         superpower: "Remarkably cheap and powerful model out of China"
     },
@@ -155,7 +147,7 @@ const modelData = [
         service: "Perplexity",
         bestModel: "Choose based on preference",
         liveMode: false,
-        reasoning: true,
+        reasoning: "DeepResearch",
         webAccess: true,
         generatesImages: true,
         generatesVideo: false,
@@ -166,7 +158,6 @@ const modelData = [
         readsDocs: true,
         sharesThreads: true,
         agentName: "Comet",
-        deepName: "DeepResearch",
         personality: "Informative and concise",
         superpower: "Select the LLM of choice, and cites web sources well"
     }
@@ -188,8 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'reasoning',
         'liveMode',
         'sharesThreads',
-        'agentName',
-        'deepName'
+        'agentName'
     ];
     
     // Get all services for columns, in specific order
