@@ -1,5 +1,18 @@
 # Development Log
 
+## 2025-02-24 19:37:50 GMT - Added Agent and Deep Research Fields
+
+### Changes Made:
+1. New Fields Addition:
+   - Added 'agentName' field to all models
+   - Added 'deepName' field to all models
+   - Set specific values:
+     • OpenAI ChatGPT: agentName = "Operator"
+     • Perplexity: agentName = "Comet", deepName = "DeepResearch"
+     • All other models: both fields set to false
+   - Updated attributes list to include new fields
+   - Maintained consistent data structure
+
 ## 2025-02-11 00:18:29 GMT - Added Mistral (LeChat)
 
 ### Changes Made:

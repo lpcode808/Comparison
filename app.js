@@ -13,6 +13,8 @@ const modelData = [
         seesVideo: false,
         readsDocs: true,
         sharesThreads: false,
+        agentName: false,
+        deepName: false,
         personality: "Adaptive, multilingual, and efficient for both personal and professional tasks",
         superpower: "Fastest inference speed (up to 1,000 words/sec), robust multilingualism, and enterprise-ready deployment"
     },
@@ -30,6 +32,8 @@ const modelData = [
         seesVideo: "In Live Mode",
         readsDocs: true,
         sharesThreads: true,
+        agentName: "Operator",
+        deepName: false,
         personality: "Polished and efficient in text. In live mode, expressive and adaptive.",
         superpower: "Live mode, most versatile set of features and capabilities"
     },
@@ -47,6 +51,8 @@ const modelData = [
         seesVideo: false,
         readsDocs: false,
         sharesThreads: true,
+        agentName: false,
+        deepName: false,
         personality: "Methodical and analytical",
         superpower: "Very powerful model for complex reasoning tasks, particularly in science, coding, and mathematics"
     },
@@ -64,14 +70,16 @@ const modelData = [
         seesVideo: false,
         readsDocs: true,
         sharesThreads: false,
+        agentName: false,
+        deepName: false,
         personality: "Since it uses different models behind the scenes, a little inconsistent",
         superpower: "Works well with Microsoft products and services"
     },
     {
         service: "Anthropic Claude",
-        bestModel: "Claude 3.5",
+        bestModel: "Claude 3.7",
         liveMode: false,
-        reasoning: false,
+        reasoning: true,
         webAccess: false,
         generatesImages: false,
         generatesVideo: false,
@@ -81,6 +89,8 @@ const modelData = [
         seesVideo: false,
         readsDocs: true,
         sharesThreads: false,
+        agentName: "via API",
+        deepName: "extended thinking mode",
         personality: "Clever and friendly",
         superpower: "Often the most creative and socially engaging model"
     },
@@ -98,6 +108,8 @@ const modelData = [
         seesVideo: true,
         readsDocs: true,
         sharesThreads: false,
+        agentName: false,
+        deepName: "2.0 Flash Thinking",
         personality: "Helpful and a bit bland",
         superpower: "Wide variety of features, good connections with search"
     },
@@ -115,6 +127,8 @@ const modelData = [
         seesVideo: false,
         readsDocs: true,
         sharesThreads: true,
+        agentName: false,
+        deepName: false,
         personality: "Sarcastic and \"fun\" (though you can tone that down)",
         superpower: "Powerful model integrated tightly with X/TWitter"
     },
@@ -132,6 +146,8 @@ const modelData = [
         seesVideo: false,
         readsDocs: "Limited",
         sharesThreads: false,
+        agentName: false,
+        deepName: false,
         personality: "Neurotically helpful, warm",
         superpower: "Remarkably cheap and powerful model out of China"
     },
@@ -149,6 +165,8 @@ const modelData = [
         seesVideo: false,
         readsDocs: true,
         sharesThreads: true,
+        agentName: "Comet",
+        deepName: "DeepResearch",
         personality: "Informative and concise",
         superpower: "Select the LLM of choice, and cites web sources well"
     }
@@ -169,6 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'reasoning',
         'liveMode',
         'sharesThreads',
+        'agentName',
+        'deepName',
         'bestModel'
     ];
     
