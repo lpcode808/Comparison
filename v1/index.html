@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Models Comparison (2025)</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗂️</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --highlight-color: #e74c3c;
+            --secondary-color: #34495e;
+            --service-color: #9b59b6;
+            --service-hover: #8e44ad;
+            --attribute-color: #27ae60;
+            --attribute-hover: #219a52;
+            --drag-handle-color: #bdc3c7;
+            --cell-padding: 12px;
+            --handle-width: 24px;
+            --border-color: #ddd;
+            --main-font: "Archivo Narrow", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            font-family: var(--main-font);
+            font-optical-sizing: auto;
+            font-weight: 400;
+            margin: 20px;
+            color: var(--primary-color);
+            line-height: 1.4;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 300px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .control-group h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .control-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .control-actions button {
+            font-size: 0.8em;
+            padding: 4px 8px;
+            background: #fff;
+            color: var(--secondary-color);
+            border: 1px solid #ddd;
+        }
+
+        .control-actions button:hover {
+            background: #f8f9fa;
+        }
+
+        .search-box {
+            padding: 8px;
+            width: 100%;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background: var(--secondary-color);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            position: relative;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: white;
+            margin-top: 20px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: max-content;
+            background: white;
+            table-layout: fixed;
+        }
+
+        th, td {
+            padding: var(--cell-padding);
+            text-align: left;
+            border: 1px solid var(--border-color);
+            background: white;
+            position: relative;
+            white-space: normal;
+            word-wrap: break-word;
+            vertical-align: top;
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 200px;
+            min-width: 200px;
+            max-width: 200px;
+        }
+
+        /* Service column */
+        th:first-child,
+        td:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 2;
+            background: white;
+            border-right: 2px solid var(--primary-color);
+            width: 180px;
+            min-width: 180px;
+            max-width: 180px;
+        }
+
+        /* Add a pseudo-element for persistent border */
+        th:first-child::after,
+        td:first-child::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -2px;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--primary-color);
+            z-index: 3;
+        }
+
+        /* Header row */
+        thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background: #f8f9fa;
+            font-weight: 600;
+            padding: 16px;
+            white-space: normal;
+            word-wrap: break-word;
+            height: auto;
+            min-height: 60px;
+            vertical-align: middle;
+        }
+
+        /* Service header cell */
+        thead th:first-child {
+            z-index: 3;
+            background: var(--primary-color);
+            color: white;
+            top: 0;
+            left: 0;
+        }
+
+        /* Cell content */
+        .check, .cross {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 24px;
+        }
+
+        .check {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .cross {
+            color: #e74c3c;
+        }
+
+        td {
+            padding: 12px 16px;
+            min-height: 48px;
+        }
+
+        /* Drag and drop feedback */
+        .dragging {
+            opacity: 0.5;
+            background: #f8f9fa !important;
+        }
+
+        .drag-over {
+            border: 2px dashed var(--primary-color) !important;
+        }
+
+        .toggle-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .toggle-item {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .toggle-item:hover {
+            border-color: var(--secondary-color);
+        }
+
+        /* Filtered attribute styles */
+        th.filtered {
+            background-color: #f0f9ff !important;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        th[onclick] {
+            transition: background-color 0.2s;
+        }
+
+        th[onclick]:hover {
+            background-color: #f5f5f5;
+        }
+
+        #service-toggles .toggle-item.active {
+            background: var(--service-color);
+            color: white;
+            border-color: var(--service-color);
+        }
+
+        #service-toggles .toggle-item.active:hover {
+            background: var(--service-hover);
+        }
+
+        #attribute-toggles .toggle-item.active {
+            background: var(--attribute-color);
+            color: white;
+            border-color: var(--attribute-color);
+        }
+
+        #attribute-toggles .toggle-item.active:hover {
+            background: var(--attribute-hover);
+        }
+
+        @media (max-width: 768px) {
+            th, td {
+                min-width: 100px;
+            }
+        }
+
+        .instructions-toggle {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .instructions-toggle:hover {
+            color: var(--secondary-color);
+        }
+
+        .instructions-toggle strong {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .instructions-toggle.collapsed strong {
+            color: var(--secondary-color);
+        }
+
+        .instructions-toggle strong::first-letter {
+            display: inline-block;
+            transform: rotate(0deg);
+            transition: transform 0.2s;
+        }
+
+        .instructions-toggle.collapsed strong::first-letter {
+            transform: rotate(-90deg);
+        }
+
+        .instructions-content {
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            margin: 0;
+            padding: 0;
+        }
+
+        .instructions-content.collapsed {
+            max-height: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .instructions-content p {
+            margin: 15px 0;
+            padding: 0;
+        }
+
+        h3 {
+            font-weight: 600;
+        }
+
+        th {
+            font-weight: 600;
+        }
+
+        .instructions-toggle strong {
+            font-weight: 500;
+        }
+
+        .toggle-item {
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <div class="control-group" style="flex-basis: 100%;">
+            <p style="font-style: italic; color: var(--secondary-color); margin-bottom: 15px;">
+                Data originally sourced from <a href="https://www.oneusefulthing.org/p/which-ai-to-use-now-an-updated-opinionated" target="_blank">Ethan Mollick's AI comparison guide</a>, but modifications made.
+                &nbsp;|&nbsp; <a href="../">→ View 2026 version (v3)</a>
+            </p>
+            <div class="instructions-toggle">
+                <strong>▶ 🔍 How to use this comparison tool</strong>
+            </div>
+            <div class="instructions-content collapsed">
+                <p style="margin: 15px 0; line-height: 1.6;">
+                    • Click on boolean attributes (✓/✗) to filter models by capability<br>
+                    • Use the search box to find specific features or characteristics<br>
+                    • Toggle services and attributes using the buttons above to customize your view<br>
+                    • Scroll horizontally to see all models and their capabilities
+                </p>
+            </div>
+            <div class="instructions-toggle">
+                <strong>▶ 📝 Other notes</strong>
+            </div>
+            <div class="instructions-content collapsed">
+                <p style="margin: 15px 0; line-height: 1.6;">
+                    • Benchmarks don't affect everyday people's usage, so just tinker with it<br>
+                    • Start with free. Pick a scenario: <i>I'm stuck, I don't get it, It's so messy.</i> <br>
+                    • If you have improvements/complaints, fork it and make it better!<br>
+                    • <i>How did I learn?</i> Through online courses and tinkering
+                </p>
+            </div>
+        </div>
+        <div class="control-group">
+            <h3>
+                🏪 Services
+                <div class="control-actions">
+                    <button class="show-all-services">Show All</button>
+                    <button class="hide-all-services">Hide All</button>
+                </div>
+            </h3>
+            <div class="toggle-list" id="service-toggles">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+        <div class="control-group">
+            <h3>
+                🍱 Attributes
+                <div class="control-actions">
+                    <button class="show-all-attributes">Show All</button>
+                    <button class="hide-all-attributes">Hide All</button>
+                </div>
+            </h3>
+            <div class="toggle-list" id="attribute-toggles">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+        <div class="control-group">
+            <h3>👓 Search and View</h3>
+            <input type="text" class="search-box" placeholder="Search models...">
+            <div class="instructions-toggle collapsed">
+                <strong>▶ 🖼️ Image Generation</strong>
+            </div>
+            <div class="instructions-content collapsed">
+                <p style="margin: 15px 0; line-height: 1.6;">
+                    • Adobe Firefly (vector within Illustrator)<br>
+                    • Canva Magic<br>
+                    • MidJourney<br>
+                    • Flux <br>
+                    • Ideogram
+                </p>
+            </div>
+            <div class="instructions-toggle collapsed">
+                <strong>▶ 🎥 Video Generation</strong>
+            </div>
+            <div class="instructions-content collapsed">
+                <p style="margin: 15px 0; line-height: 1.6;">
+                    • RunwayML
+                </p>
+            </div>
+            <div class="instructions-toggle collapsed">
+                <strong>▶ 🎧 Audio Generation</strong>
+            </div>
+            <div class="instructions-content collapsed">
+                <p style="margin: 15px 0; line-height: 1.6;">
+                    • ElevenLabs<br>
+                    • Google's NotebookLM Audio Overview
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <!-- Headers will be dynamically populated -->
+            </thead>
+            <tbody>
+                <!-- Content will be dynamically populated -->
+            </tbody>
+        </table>
+    </div>
+    <div style="position: fixed; bottom: 10px; right: 10px; font-size: 0.8em; color: var(--secondary-color); background: rgba(255,255,255,0.9); padding: 5px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+        v1 · Last updated: 2025-02-24
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

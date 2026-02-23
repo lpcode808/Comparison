@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tool Comparison — Agentic Era</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚙️</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <style>
+        /* ── Variables ──────────────────────────── */
+        :root {
+            --primary:       #1a1a2e;
+            --secondary:     #34495e;
+            --border:        #dde1e7;
+            --bg:            #f6f7fb;
+            --white:         #ffffff;
+            --main-font:     "Archivo Narrow", -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --cell-width:    200px;
+            --attr-width:    170px;
+        }
+
+        /* ── Base ───────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            font-family: var(--main-font);
+            font-weight: 400;
+            margin: 0;
+            padding: 20px;
+            color: var(--primary);
+            background: var(--bg);
+            line-height: 1.45;
+        }
+
+        /* ── Framework Banner ───────────────────── */
+        .framework-banner {
+            background: var(--primary);
+            color: #fff;
+            padding: 22px 24px 18px;
+            border-radius: 10px;
+            margin-bottom: 18px;
+        }
+
+        .banner-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .banner-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .banner-source {
+            font-size: 0.8em;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .banner-layers {
+            display: flex;
+            align-items: stretch;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .layer {
+            flex: 1;
+            min-width: 140px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 6px;
+            padding: 12px 14px;
+        }
+
+        .layer-featured {
+            background: rgba(217,119,87,0.18);
+            border: 1px solid rgba(217,119,87,0.35);
+        }
+
+        .layer-tag {
+            font-size: 0.65em;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.72); /* was 0.45 — axe: insufficient contrast */
+            margin-bottom: 4px;
+        }
+
+        .layer-name {
+            font-size: 1em;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .layer-examples {
+            font-size: 0.75em;
+            color: rgba(255,255,255,0.72); /* was 0.45 — axe: insufficient contrast */
+        }
+
+        .layer-arrow {
+            display: flex;
+            align-items: center;
+            font-size: 1.4em;
+            color: rgba(255,255,255,0.25);
+            padding: 0 2px;
+            align-self: center;
+        }
+
+        .banner-quote {
+            margin: 0;
+            font-style: italic;
+            font-size: 0.82em;
+            color: rgba(255,255,255,0.6);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 13px;
+        }
+
+        /* ── Category Pills ─────────────────────── */
+        .category-pills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .category-pill {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: var(--white);
+            cursor: pointer;
+            font-family: var(--main-font);
+            font-size: 0.88em;
+            font-weight: 500;
+            color: var(--secondary);
+            transition: all 0.15s;
+        }
+
+        .category-pill:hover { border-color: #aaa; }
+
+        .category-pill.active { color: white; border-color: transparent; }
+        .category-pill[data-category="all"].active       { background: var(--primary); }
+        .category-pill[data-category="Chatbot"].active   { background: #7c3aed; }
+        .category-pill[data-category="Coding Agent"].active { background: #b91c1c; }
+        .category-pill[data-category="Work Agent"].active   { background: #92400e; } /* darkened for contrast */
+        .category-pill[data-category="Research Tool"].active { background: #047857; } /* darkened for contrast */
+
+        /* ── Controls ───────────────────────────── */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: flex-start;
+            margin-bottom: 18px;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 260px;
+            background: var(--white);
+            padding: 14px 16px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+        }
+
+        .control-group h3 {
+            margin: 0 0 10px 0;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .control-actions { display: flex; gap: 6px; }
+
+        .control-actions button {
+            font-size: 0.78em;
+            padding: 3px 8px;
+            background: var(--white);
+            color: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: var(--main-font);
+            transition: background 0.1s;
+        }
+
+        .control-actions button:hover { background: var(--bg); }
+
+        .search-box {
+            width: 100%;
+            padding: 7px 10px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: var(--main-font);
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .search-box:focus { outline: 2px solid #7c3aed40; border-color: #7c3aed; }
+
+        /* ── Toggle items ───────────────────────── */
+        .toggle-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .toggle-item {
+            padding: 3px 9px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--main-font);
+            font-size: 0.82em;
+            font-weight: 500;
+            background: var(--white);
+            color: var(--secondary);
+            transition: all 0.15s;
+            user-select: none;
+        }
+
+        .toggle-item:hover { border-color: #aaa; }
+
+        #service-toggles .toggle-item.active {
+            background: var(--cat-color, #7c3aed);
+            color: white;
+            border-color: var(--cat-color, #7c3aed);
+        }
+
+        #attribute-toggles .toggle-item.active {
+            background: #34495e;
+            color: white;
+            border-color: #34495e;
+        }
+
+        /* ── Collapsible instructions ───────────── */
+        .instructions-toggle {
+            cursor: pointer;
+            user-select: none;
+            font-size: 0.85em;
+            color: var(--secondary);
+            margin: 8px 0 0;
+        }
+
+        .instructions-toggle strong {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .instructions-content {
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.25s ease-out;
+            font-size: 0.85em;
+            color: var(--secondary);
+        }
+
+        .instructions-content.collapsed { max-height: 0; }
+
+        .instructions-content p { margin: 10px 0 0; line-height: 1.65; }
+
+        /* ── Table container ────────────────────── */
+        .table-container {
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            overflow: auto;
+            max-height: 80vh;
+        }
+
+        /* ── Table ──────────────────────────────── */
+        table {
+            border-collapse: collapse;
+            width: max-content;
+            table-layout: fixed;
+        }
+
+        th, td {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            text-align: left;
+            vertical-align: top;
+            width: var(--cell-width);
+            min-width: var(--cell-width);
+            max-width: var(--cell-width);
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+
+        /* First (attribute label) column */
+        th:first-child,
+        td:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 2;
+            background: var(--white);
+            border-right: 2px solid var(--primary);
+            width: var(--attr-width);
+            min-width: var(--attr-width);
+            max-width: var(--attr-width);
+        }
+
+        th:first-child::after,
+        td:first-child::after {
+            content: '';
+            position: absolute;
+            top: 0; right: -2px; bottom: 0;
+            width: 2px;
+            background: var(--primary);
+            z-index: 3;
+        }
+
+        /* Header row */
+        thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background: #f0f2f6;
+            font-weight: 600;
+        }
+
+        thead th:first-child {
+            z-index: 4;
+            background: var(--primary);
+            color: white;
+        }
+
+        /* ── Service header cells ───────────────── */
+        .service-header {
+            text-align: center;
+            padding: 10px 10px 8px;
+            vertical-align: middle;
+        }
+
+        .sh-name {
+            display: block;
+            font-weight: 600;
+            font-size: 0.95em;
+            margin-bottom: 3px;
+        }
+
+        .sh-company {
+            display: block;
+            font-size: 0.72em;
+            font-weight: 500;
+            color: #4b5563; /* fixed dark gray — passes 4.5:1 on #f0f2f6 header bg */
+        }
+
+        .co-dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 2px;
+            margin-right: 4px;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+
+        /* ── Attribute label cells ──────────────── */
+        .attr-label {
+            font-weight: 500;
+            font-size: 0.85em;
+            background: var(--white);
+            color: var(--secondary);
+        }
+
+        .attr-label.filtered {
+            background: #eef2ff !important;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .attr-label[style*="cursor"] { transition: background 0.15s; }
+        .attr-label[style*="cursor"]:hover { background: #f8f9fa !important; }
+
+        /* ── Section divider rows ───────────────── */
+        .section-divider {
+            background: #eef2ff;
+            font-size: 0.72em;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            color: #5b6b8a;
+            border-bottom: 1px solid #d0d9ef;
+        }
+
+        .section-divider strong { font-weight: 700; }
+
+        /* ── Data cells ─────────────────────────── */
+        td {
+            font-size: 0.88em;
+            background: var(--white);
+        }
+
+        .superpower-cell {
+            font-size: 0.82em;
+            color: var(--secondary);
+            font-style: italic;
+        }
+
+        /* ── Value badges ───────────────────────── */
+        .check {
+            color: #059669;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .cross {
+            color: #dc2626;
+            display: inline-block;
+        }
+
+        .harness-strength-wrap {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .harness-dots {
+            display: flex;
+            gap: 3px;
+        }
+
+        .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .dot.filled  { background: var(--primary); }
+        .dot.empty   { background: #d1d5db; border: 1px solid #b0b7c3; }
+
+        .harness-label {
+            font-size: 0.85em;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .autonomy-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.82em;
+            font-weight: 600;
+        }
+
+        /* Colors darkened to pass WCAG 4.5:1 on their tinted backgrounds */
+        .autonomy-chat { background: #f3f4f6; color: #374151; } /* was #6b7280 → 4.39:1 */
+        .autonomy-semi { background: #eff6ff; color: #1d4ed8; } /* blue: 4.7:1 OK */
+        .autonomy-full { background: #ecfdf5; color: #065f46; } /* was #059669 → 3.57:1 */
+
+        .category-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            border: 1px solid;
+            font-size: 0.82em;
+            font-weight: 600;
+        }
+
+        .company-badge {
+            display: inline-block;
+            padding: 1px 6px 1px 10px;
+            border-left: 3px solid;
+            font-size: 0.88em;
+        }
+
+        /* ── Attribution text ───────────────────── */
+        .attribution {
+            font-style: italic;
+            font-size: 0.85em;
+            color: var(--secondary);
+            margin-bottom: 12px;
+            line-height: 1.55;
+        }
+
+        .attribution a { color: inherit; }
+
+        /* ── Timestamp ──────────────────────────── */
+        .timestamp {
+            position: fixed;
+            bottom: 10px;
+            right: 12px;
+            font-size: 0.75em;
+            color: #6b7280; /* was #aaa (2.3:1) → now 5.6:1 */
+            background: rgba(255,255,255,0.92);
+            padding: 4px 8px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        /* ── Responsive ─────────────────────────── */
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            .banner-layers { gap: 6px; }
+            .layer { min-width: 120px; padding: 10px 12px; }
+            .layer-arrow { display: none; }
+            th, td { min-width: 150px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Framework Banner ─────────────────────── -->
+    <header class="framework-banner">
+        <div class="banner-header">
+            <span class="banner-title">The AI Stack</span>
+            <span class="banner-source">Ethan Mollick · Feb 2026</span>
+        </div>
+        <div class="banner-layers">
+            <div class="layer">
+                <div class="layer-tag">Layer 1</div>
+                <div class="layer-name">Models</div>
+                <div class="layer-examples">GPT-5.2 · Claude Opus 4.6 · Gemini 3 Pro</div>
+            </div>
+            <div class="layer-arrow">→</div>
+            <div class="layer">
+                <div class="layer-tag">Layer 2</div>
+                <div class="layer-name">Apps</div>
+                <div class="layer-examples">chatgpt.com · claude.ai · NotebookLM</div>
+            </div>
+            <div class="layer-arrow">→</div>
+            <div class="layer layer-featured">
+                <div class="layer-tag">Layer 3 — the shift</div>
+                <div class="layer-name">Harnesses</div>
+                <div class="layer-examples">Claude Code · Cowork · Codex</div>
+            </div>
+        </div>
+        <p class="banner-quote">"The same model can behave very differently depending on what harness it's operating in." — Ethan Mollick</p>
+    </header>
+
+    <main>
+    <!-- ── Category Filter Pills ────────────────── -->
+    <div class="category-pills">
+        <button class="category-pill active" data-category="all">All (9)</button>
+        <button class="category-pill" data-category="Chatbot">💬 Chatbots</button>
+        <button class="category-pill" data-category="Coding Agent">💻 Coding Agents</button>
+        <button class="category-pill" data-category="Work Agent">📁 Work Agents</button>
+        <button class="category-pill" data-category="Research Tool">🔍 Research Tools</button>
+    </div>
+
+    <!-- ── Controls ─────────────────────────────── -->
+    <div class="controls">
+
+        <!-- Attribution + instructions -->
+        <div class="control-group" style="flex-basis: 100%;">
+            <p class="attribution">
+                Data based on <a href="https://www.oneusefulthing.org/p/a-guide-to-which-ai-to-use-in-the" target="_blank">Ethan Mollick's Feb 2026 guide</a>, with modifications.
+                v3 adds the <strong>Models → Apps → Harnesses</strong> framework and updates to the agentic era.
+            </p>
+            <div class="instructions-toggle" tabindex="0" role="button" aria-expanded="false">
+                <strong>▶ 🔍 How to use</strong>
+            </div>
+            <div class="instructions-content collapsed">
+                <p>
+                    • Use the <strong>category pills</strong> above to filter by tool type<br>
+                    • Click any boolean row label (✓/✗) to sort by that capability<br>
+                    • Use the <strong>search box</strong> to find tools by feature or description<br>
+                    • Toggle individual services and attributes on/off below<br>
+                    • <strong>Harness Strength</strong> (●●●●) reflects how autonomously the AI can act
+                </p>
+            </div>
+            <div class="instructions-toggle" tabindex="0" role="button" aria-expanded="false" style="margin-top: 8px;">
+                <strong>▶ 📝 Notes</strong>
+            </div>
+            <div class="instructions-content collapsed">
+                <p>
+                    • "Fully autonomous" tools do real work while you watch (or don't)<br>
+                    • Coding agents (Claude Code, Codex) are powerful but require technical knowledge<br>
+                    • Harness quality matters more than model quality for most tasks — Gemini's model is just as smart, but its chatbot harness can't make Excel files<br>
+                    • Google Antigravity (coding agent) and Manus (standalone harness, now Meta) also exist but aren't yet widely used<br>
+                    • GPT-5.2 Pro is available at higher cost tiers — extremely capable for complex analytical work<br>
+                    • Suggestions welcome — fork it and make it better!
+                </p>
+            </div>
+        </div>
+
+        <!-- Service toggles -->
+        <div class="control-group">
+            <h3>
+                🏪 Services
+                <div class="control-actions">
+                    <button class="show-all-services">Show All</button>
+                    <button class="hide-all-services">Hide All</button>
+                </div>
+            </h3>
+            <div class="toggle-list" id="service-toggles"><!-- populated by JS --></div>
+        </div>
+
+        <!-- Attribute toggles -->
+        <div class="control-group">
+            <h3>
+                🍱 Attributes
+                <div class="control-actions">
+                    <button class="show-all-attributes">Show All</button>
+                    <button class="hide-all-attributes">Hide All</button>
+                </div>
+            </h3>
+            <div class="toggle-list" id="attribute-toggles"><!-- populated by JS --></div>
+        </div>
+
+        <!-- Search + extra notes -->
+        <div class="control-group">
+            <h3>👓 Search</h3>
+            <input type="text" class="search-box" placeholder="Search tools, features, companies…" aria-label="Search AI tools">
+
+            <div class="instructions-toggle collapsed" tabindex="0" role="button" aria-expanded="false" style="margin-top: 6px;">
+                <strong>▶ 🖼️ Image generation (standalone)</strong>
+            </div>
+            <div class="instructions-content collapsed">
+                <p>
+                    • Adobe Firefly (vector, Illustrator)<br>
+                    • Canva Magic<br>
+                    • MidJourney<br>
+                    • Flux / Ideogram<br>
+                    • nano banana (Google — best current standalone)
+                </p>
+            </div>
+
+            <div class="instructions-toggle collapsed" tabindex="0" role="button" aria-expanded="false" style="margin-top: 6px;">
+                <strong>▶ 🎥 Video generation (standalone)</strong>
+            </div>
+            <div class="instructions-content collapsed">
+                <p>
+                    • RunwayML<br>
+                    • Sora (OpenAI — not in ChatGPT chatbot)<br>
+                    • Veo 3.1 (bundled into Gemini)
+                </p>
+            </div>
+
+            <div class="instructions-toggle collapsed" tabindex="0" role="button" aria-expanded="false" style="margin-top: 6px;">
+                <strong>▶ 🧩 Other agents / harnesses</strong>
+            </div>
+            <div class="instructions-content collapsed">
+                <p>
+                    • <strong>OpenClaw</strong> — open-source local agent, serious security risk<br>
+                    • <strong>Manus</strong> — standalone multi-model harness, now acquired by Meta<br>
+                    • <strong>Google Antigravity</strong> — Google's coding agent (less developed)<br>
+                    • <strong>Claude for PowerPoint</strong> — Anthropic plugin, like Claude for Excel
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ── Table ─────────────────────────────────── -->
+    <div class="table-container" tabindex="0" role="region" aria-label="AI tool comparison table">
+        <table>
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    </main>
+
+    <footer class="timestamp">Updated: 2026-02-17 &nbsp;|&nbsp; <a href="v1/" style="color: inherit;">← 2025 version</a></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
+    <script src="app-v3.js"></script>
+</body>
+</html>
