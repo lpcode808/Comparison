@@ -47,6 +47,13 @@ const categoryEmojis = {
     "Research Tool":  "🔍"
 };
 
+const darkCategoryBadgeStyles = {
+    "Chatbot":       { bg: "rgba(124, 58, 237, 0.24)", border: "rgba(196, 181, 253, 0.45)", text: "#c4b5fd" },
+    "Coding Agent":  { bg: "rgba(185, 28, 28, 0.24)", border: "rgba(252, 165, 165, 0.45)", text: "#fca5a5" },
+    "Work Agent":    { bg: "rgba(146, 64, 14, 0.24)", border: "rgba(253, 186, 116, 0.45)", text: "#fdba74" },
+    "Research Tool": { bg: "rgba(4, 120, 87, 0.24)", border: "rgba(110, 231, 183, 0.45)", text: "#6ee7b7" }
+};
+
 // ─── DATA MODEL ───────────────────────────────
 // harnessStrength: 1=Basic, 2=Moderate, 3=Strong, 4=Powerful
 // autonomy: "Chat only" | "Semi-autonomous" | "Fully autonomous"
@@ -317,6 +324,150 @@ document.addEventListener('DOMContentLoaded', () => {
     let visibleAttributes = new Set(attributes);
     let currentFilter = { attribute: null, showTrue: null };
     let activeCategoryFilter = 'all';
+    const themeToggle = document.querySelector('.theme-toggle');
+    const mobileFocusToggle = document.querySelector('.mobile-focus-toggle');
+    const mobileServiceSelect = document.querySelector('.mobile-service-select');
+    const mobilePrevService = document.querySelector('.mobile-prev-service');
+    const mobileNextService = document.querySelector('.mobile-next-service');
+    const themeMedia = window.matchMedia('(prefers-color-scheme: dark)');
+    const THEME_KEY = 'comparison-theme';
+    let mobileFocusMode = false;
+    let mobileFocusedService = services[0] || '';
+
+    function readSavedTheme() {
+        try {
+            return localStorage.getItem(THEME_KEY);
+        } catch {
+            return null;
+        }
+    }
+
+    function saveTheme(theme) {
+        try {
+            localStorage.setItem(THEME_KEY, theme);
+        } catch {
+            // Ignore storage errors (private mode / blocked storage).
+        }
+    }
+
+    function getCurrentTheme() {
+        return document.documentElement.getAttribute('data-theme') || 'light';
+    }
+
+    function updateThemeToggle(theme) {
+        if (!themeToggle) return;
+        const isDark = theme === 'dark';
+        themeToggle.setAttribute('aria-pressed', String(isDark));
+        themeToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+        themeToggle.textContent = isDark ? '☀️ Light mode' : '🌙 Dark mode';
+    }
+
+    function applyTheme(theme, persist = true) {
+        document.documentElement.setAttribute('data-theme', theme);
+        updateThemeToggle(theme);
+        if (persist) saveTheme(theme);
+        renderTable();
+    }
+
+    function initTheme() {
+        const saved = readSavedTheme();
+        const initialTheme = saved || (themeMedia.matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', initialTheme);
+        updateThemeToggle(initialTheme);
+
+        const handleSystemThemeChange = event => {
+            if (readSavedTheme()) return;
+            applyTheme(event.matches ? 'dark' : 'light', false);
+        };
+
+        if (typeof themeMedia.addEventListener === 'function') {
+            themeMedia.addEventListener('change', handleSystemThemeChange);
+        } else if (typeof themeMedia.addListener === 'function') {
+            themeMedia.addListener(handleSystemThemeChange);
+        }
+
+        themeToggle?.addEventListener('click', () => {
+            const next = getCurrentTheme() === 'dark' ? 'light' : 'dark';
+            applyTheme(next, true);
+        });
+    }
+
+    function getBaseVisibleServices() {
+        return services.filter(s => visibleServices.has(s));
+    }
+
+    function updateMobileFocusControls(baseVisible = getBaseVisibleServices()) {
+        if (!mobileFocusToggle || !mobileServiceSelect || !mobilePrevService || !mobileNextService) return;
+
+        if (baseVisible.length > 0 && !baseVisible.includes(mobileFocusedService)) {
+            mobileFocusedService = baseVisible[0];
+        }
+
+        mobileFocusToggle.setAttribute('aria-pressed', String(mobileFocusMode));
+        mobileFocusToggle.setAttribute(
+            'aria-label',
+            mobileFocusMode ? 'Disable focused service view' : 'Enable focused service view'
+        );
+        mobileFocusToggle.textContent = mobileFocusMode ? '📱 Focus on' : '📱 Focus one service';
+
+        mobileServiceSelect.innerHTML = '';
+        if (baseVisible.length === 0) {
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = 'No visible services';
+            mobileServiceSelect.appendChild(option);
+            mobileServiceSelect.disabled = true;
+            mobilePrevService.disabled = true;
+            mobileNextService.disabled = true;
+            return;
+        }
+
+        baseVisible.forEach(service => {
+            const option = document.createElement('option');
+            option.value = service;
+            option.textContent = service;
+            mobileServiceSelect.appendChild(option);
+        });
+
+        mobileServiceSelect.value = mobileFocusedService;
+        mobileServiceSelect.disabled = !mobileFocusMode;
+        const navDisabled = !mobileFocusMode || baseVisible.length <= 1;
+        mobilePrevService.disabled = navDisabled;
+        mobileNextService.disabled = navDisabled;
+    }
+
+    function cycleMobileFocus(direction) {
+        const baseVisible = getBaseVisibleServices();
+        if (baseVisible.length === 0) return;
+        const currentIndex = Math.max(0, baseVisible.indexOf(mobileFocusedService));
+        const nextIndex = (currentIndex + direction + baseVisible.length) % baseVisible.length;
+        mobileFocusedService = baseVisible[nextIndex];
+        renderTable();
+    }
+
+    function initMobileFocusControls() {
+        if (!mobileFocusToggle || !mobileServiceSelect || !mobilePrevService || !mobileNextService) return;
+
+        mobileFocusToggle.addEventListener('click', () => {
+            mobileFocusMode = !mobileFocusMode;
+            const baseVisible = getBaseVisibleServices();
+            if (mobileFocusMode && baseVisible.length > 0 && !baseVisible.includes(mobileFocusedService)) {
+                mobileFocusedService = baseVisible[0];
+            }
+            updateMobileFocusControls(baseVisible);
+            renderTable();
+        });
+
+        mobileServiceSelect.addEventListener('change', e => {
+            mobileFocusedService = e.target.value;
+            renderTable();
+        });
+
+        mobilePrevService.addEventListener('click', () => cycleMobileFocus(-1));
+        mobileNextService.addEventListener('click', () => cycleMobileFocus(1));
+
+        updateMobileFocusControls();
+    }
 
     // ─── CATEGORY PILL FILTER ─────────────────
     document.querySelectorAll('.category-pill').forEach(pill => {
@@ -371,6 +522,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function formatCategory(value) {
         const color = categoryColors[value] || '#666';
         const emoji = categoryEmojis[value] || '';
+        if (getCurrentTheme() === 'dark') {
+            const dark = darkCategoryBadgeStyles[value] || {
+                bg: 'rgba(148, 163, 184, 0.24)',
+                border: 'rgba(148, 163, 184, 0.45)',
+                text: '#cbd5e1'
+            };
+            return `<span class="category-badge" style="background:${dark.bg};color:${dark.text};border-color:${dark.border}">${emoji} ${value}</span>`;
+        }
         return `<span class="category-badge" style="background:${color}18;color:${color};border-color:${color}40">${emoji} ${value}</span>`;
     }
 
@@ -431,7 +590,14 @@ document.addEventListener('DOMContentLoaded', () => {
         thead.innerHTML = '';
         tbody.innerHTML = '';
 
-        const visible = services.filter(s => visibleServices.has(s));
+        const baseVisible = getBaseVisibleServices();
+        if (mobileFocusMode && baseVisible.length > 0 && !baseVisible.includes(mobileFocusedService)) {
+            mobileFocusedService = baseVisible[0];
+        }
+        const visible = mobileFocusMode
+            ? (baseVisible.length > 0 ? [mobileFocusedService] : [])
+            : baseVisible;
+        updateMobileFocusControls(baseVisible);
 
         // Header row
         const headerRow = document.createElement('tr');
@@ -643,6 +809,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ─── BOOT ─────────────────────────────────
+    initTheme();
+    initMobileFocusControls();
     initToggles();
     renderTable();
 });

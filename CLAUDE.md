@@ -4,13 +4,13 @@
 
 Interactive comparison table for AI tools in the agentic era. Built on Ethan Mollick's Feb 2026 framework: **Models → Apps → Harnesses**. Vanilla JS, no build step, GitHub Pages deployable.
 
-## Current Architecture (v3, 2026-02-22)
+## Current Architecture (v3, 2026-02-23)
 
 ### Core Files
 - `index.html` — v3 landing page (was `v3.html`); all CSS embedded
 - `app-v3.js` — data model + rendering logic
 - `v1/index.html` + `v1/app.js` — archived 2025 version (PII-cleaned), links back to v3
-- `tests/v3.spec.js` — 67 Playwright E2E tests
+- `tests/v3.spec.js` — 74 Playwright E2E tests
 - `playwright.config.js` — runs Python HTTP server on port 8002
 - `package.json` / `pnpm-lock.yaml` — `pnpm test` to run suite
 
@@ -55,11 +55,16 @@ Three separate color objects in `app-v3.js`:
 - Fuzzy search: Fuse.js across service/company/superpower/model
 - Service + attribute toggle panels with show/hide all
 - Collapsible instruction sections
+- Light/dark theme toggle (system-aware + persisted override)
+- Mobile form-factor controls:
+  - Touch-optimized control sizing
+  - Swipe hint for horizontal comparison
+  - Focus-one-service mode with selector + next/previous
 
 ## Testing
 
 ```bash
-pnpm test           # run all 49 tests (Chromium, headless)
+pnpm test           # run all tests (Chromium, headless)
 pnpm test:headed    # see the browser
 pnpm test:report    # view last report
 ```
@@ -91,4 +96,4 @@ Never embed staff directory URLs (`?id=NNNNNN`), personal email, or promo codes 
 
 ---
 
-*Last updated: 2026-02-22*
+*Last updated: 2026-02-23*

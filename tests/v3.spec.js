@@ -634,6 +634,43 @@ test.describe('Content verification', () => {
     });
 });
 
+test.describe('Theme mode', () => {
+    test.beforeEach(async ({ page }) => {
+        await page.goto('/');
+        await page.waitForSelector('tbody tr');
+    });
+
+    test('theme toggle is visible with aria state', async ({ page }) => {
+        const toggle = page.locator('.theme-toggle');
+        await expect(toggle).toBeVisible();
+        await expect(toggle).toHaveAttribute('aria-pressed', /true|false/);
+    });
+
+    test('clicking theme toggle flips document theme', async ({ page }) => {
+        const before = await page.evaluate(() =>
+            document.documentElement.getAttribute('data-theme')
+        );
+        await page.click('.theme-toggle');
+        const after = await page.evaluate(() =>
+            document.documentElement.getAttribute('data-theme')
+        );
+        expect(after).not.toBe(before);
+    });
+
+    test('selected theme persists after page reload', async ({ page }) => {
+        await page.click('.theme-toggle');
+        const selected = await page.evaluate(() =>
+            document.documentElement.getAttribute('data-theme')
+        );
+        await page.reload();
+        await page.waitForSelector('tbody tr');
+        const afterReload = await page.evaluate(() =>
+            document.documentElement.getAttribute('data-theme')
+        );
+        expect(afterReload).toBe(selected);
+    });
+});
+
 test.describe('Responsive / Mobile', () => {
     test('renders on iPhone SE (375px)', async ({ page }) => {
         await page.setViewportSize({ width: 375, height: 667 });
@@ -659,5 +696,55 @@ test.describe('Responsive / Mobile', () => {
         await page.waitForSelector('tbody tr');
         await page.click('[data-category="Chatbot"]');
         await expect(await serviceCount(page)).toBe(3);
+    });
+
+    test('mobile scroll hint is visible on narrow viewport', async ({ page }) => {
+        await page.setViewportSize({ width: 375, height: 667 });
+        await page.goto('/');
+        await page.waitForSelector('tbody tr');
+        await expect(page.locator('.table-scroll-hint')).toBeVisible();
+    });
+
+    test('mobile focus controls render on narrow viewport', async ({ page }) => {
+        await page.setViewportSize({ width: 375, height: 667 });
+        await page.goto('/');
+        await page.waitForSelector('tbody tr');
+        await expect(page.locator('.mobile-view-controls')).toBeVisible();
+        await expect(page.locator('.mobile-focus-toggle')).toBeVisible();
+        await expect(page.locator('.mobile-service-select')).toBeVisible();
+    });
+
+    test('mobile focus mode shows one selected service and can restore full comparison', async ({ page }) => {
+        await page.setViewportSize({ width: 375, height: 667 });
+        await page.goto('/');
+        await page.waitForSelector('tbody tr');
+
+        await page.click('.mobile-focus-toggle');
+        await expect(page.locator('.mobile-focus-toggle')).toHaveAttribute('aria-pressed', 'true');
+        await expect(await serviceCount(page)).toBe(1);
+
+        await page.selectOption('.mobile-service-select', 'Gemini');
+        const focusedNames = await serviceOrder(page);
+        expect(focusedNames).toEqual(['Gemini']);
+
+        await page.click('.mobile-focus-toggle');
+        await expect(page.locator('.mobile-focus-toggle')).toHaveAttribute('aria-pressed', 'false');
+        await expect(await serviceCount(page)).toBe(9);
+    });
+
+    test('mobile focus next/previous buttons cycle focused service', async ({ page }) => {
+        await page.setViewportSize({ width: 375, height: 667 });
+        await page.goto('/');
+        await page.waitForSelector('tbody tr');
+
+        await page.click('.mobile-focus-toggle');
+        const before = await serviceOrder(page);
+        await page.click('.mobile-next-service');
+        const afterNext = await serviceOrder(page);
+        expect(afterNext[0]).not.toBe(before[0]);
+
+        await page.click('.mobile-prev-service');
+        const afterPrev = await serviceOrder(page);
+        expect(afterPrev[0]).toBe(before[0]);
     });
 });
