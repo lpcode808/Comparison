@@ -611,7 +611,7 @@ test.describe('Content verification', () => {
             has: page.locator('th.attr-label', { hasText: 'Cost' })
         });
         const costs = await costRow.locator('td').allTextContents();
-        const validCosts = ['$20/mo', '$20/mo+', 'Free'];
+        const validCosts = ['$20/mo', '$20/mo+', 'Free', 'Free tier'];
         costs.forEach(cost => {
             expect(validCosts).toContain(cost.trim());
         });

@@ -107,7 +107,7 @@ const modelData = [
         service: "Gemini",
         company: "Google",
         category: "Chatbot",
-        underlyingModel: "Gemini 3 Pro",
+        underlyingModel: "Gemini 3.1 Pro",
         cost: "$20/mo",
         technicalLevel: "Beginner",
         autonomy: "Chat only",
@@ -151,7 +151,7 @@ const modelData = [
         service: "OpenAI Codex",
         company: "OpenAI",
         category: "Coding Agent",
-        underlyingModel: "GPT-5.2",
+        underlyingModel: "GPT-5.3-Codex",
         cost: "$20/mo+",
         technicalLevel: "Advanced",
         autonomy: "Fully autonomous",
@@ -189,7 +189,7 @@ const modelData = [
         generatesImages: false,
         generatesVideo: false,
         readsDocs: true,
-        superpower: "Claude Code for non-coders: works on your local files and browser; runs in secure VM; no coding required"
+        superpower: "Claude Code for non-coders: works on local files and browser in secure VM; now with plugins for Google Workspace, Slack, and DocuSign"
     },
     {
         service: "Claude for Excel",
@@ -211,14 +211,14 @@ const modelData = [
         generatesImages: false,
         generatesVideo: false,
         readsDocs: true,
-        superpower: "Junior analyst inside Excel; describe what you want and it does the work; results live in your spreadsheet"
+        superpower: "Junior analyst inside Excel; reads multi-tab workbooks, explains calculations with cell citations, edits pivot tables and charts"
     },
     {
         service: "NotebookLM",
         company: "Google",
         category: "Research Tool",
-        underlyingModel: "Gemini 3 Pro",
-        cost: "Free",
+        underlyingModel: "Gemini 3.1 Pro",
+        cost: "Free tier",
         technicalLevel: "Beginner",
         autonomy: "Semi-autonomous",
         harnessStrength: 2,
