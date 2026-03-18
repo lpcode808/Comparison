@@ -320,15 +320,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     let services = modelData.map(m => m.service);
-    let visibleServices = new Set(services);
+    let enabledServices = new Set(services);
     let visibleAttributes = new Set(attributes);
     let currentFilter = { attribute: null, showTrue: null };
     let activeCategoryFilter = 'all';
+    let searchQuery = '';
     const themeToggle = document.querySelector('.theme-toggle');
     const mobileFocusToggle = document.querySelector('.mobile-focus-toggle');
     const mobileServiceSelect = document.querySelector('.mobile-service-select');
     const mobilePrevService = document.querySelector('.mobile-prev-service');
     const mobileNextService = document.querySelector('.mobile-next-service');
+    const allCategoryPill = document.querySelector('.category-pill[data-category="all"]');
     const themeMedia = window.matchMedia('(prefers-color-scheme: dark)');
     const THEME_KEY = 'comparison-theme';
     let mobileFocusMode = false;
@@ -393,7 +395,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getBaseVisibleServices() {
-        return services.filter(s => visibleServices.has(s));
+        let filtered = services.filter(s => enabledServices.has(s));
+
+        if (activeCategoryFilter !== 'all') {
+            filtered = filtered.filter(service => {
+                const data = modelData.find(m => m.service === service);
+                return data?.category === activeCategoryFilter;
+            });
+        }
+
+        if (searchQuery) {
+            const hits = new Set(fuse.search(searchQuery).map(result => result.item.service));
+            filtered = filtered.filter(service => hits.has(service));
+        }
+
+        return filtered;
+    }
+
+    function updateServiceToggleStates() {
+        document.querySelectorAll('#service-toggles .toggle-item').forEach(toggle => {
+            const isActive = enabledServices.has(toggle.dataset.service);
+            toggle.classList.toggle('active', isActive);
+            toggle.setAttribute('aria-pressed', String(isActive));
+        });
+    }
+
+    function updateStaticUi() {
+        if (allCategoryPill) {
+            allCategoryPill.textContent = `All (${modelData.length})`;
+        }
     }
 
     function updateMobileFocusControls(baseVisible = getBaseVisibleServices()) {
@@ -475,28 +505,9 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
             pill.classList.add('active');
             activeCategoryFilter = pill.dataset.category;
-            syncCategoryToToggles();
             renderTable();
         });
     });
-
-    function syncCategoryToToggles() {
-        if (activeCategoryFilter === 'all') {
-            visibleServices = new Set(services);
-        } else {
-            visibleServices = new Set(
-                services.filter(s => {
-                    const d = modelData.find(m => m.service === s);
-                    return d && d.category === activeCategoryFilter;
-                })
-            );
-        }
-        document.querySelectorAll('#service-toggles .toggle-item').forEach(toggle => {
-            const isActive = visibleServices.has(toggle.dataset.service);
-            toggle.classList.toggle('active', isActive);
-            toggle.setAttribute('aria-pressed', String(isActive));
-        });
-    }
 
     // ─── VALUE FORMATTERS ─────────────────────
     function formatHarnessStrength(value) {
@@ -579,7 +590,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         services.length = 0;
         services.push(...sorted);
-        syncCategoryToToggles();
         renderTable();
     }
 
@@ -672,13 +682,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ─── SEARCH ───────────────────────────────
     document.querySelector('.search-box').addEventListener('input', e => {
-        const q = e.target.value.trim();
-        if (!q) {
-            syncCategoryToToggles();
-        } else {
-            const hits = new Set(fuse.search(q).map(r => r.item.service));
-            visibleServices = new Set(services.filter(s => hits.has(s)));
-        }
+        searchQuery = e.target.value.trim();
         renderTable();
     });
 
@@ -693,26 +697,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = modelData.find(m => m.service === service);
             const svcColor = serviceColors[service] || categoryColors[data.category] || '#666';
             const toggle = document.createElement('span');
-            toggle.className = 'toggle-item active';
+            toggle.className = `toggle-item${enabledServices.has(service) ? ' active' : ''}`;
             toggle.dataset.service = service;
             toggle.textContent = service;
             toggle.setAttribute('tabindex', '0');
             toggle.setAttribute('role', 'button');
-            toggle.setAttribute('aria-pressed', 'true');
+            toggle.setAttribute('aria-pressed', String(enabledServices.has(service)));
             toggle.style.setProperty('--cat-color', svcColor);
             function handleToggle() {
-                // Reset category filter to "all" when manually toggling
-                activeCategoryFilter = 'all';
-                document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
-                document.querySelector('.category-pill[data-category="all"]').classList.add('active');
-
                 toggle.classList.toggle('active');
                 const isActive = toggle.classList.contains('active');
                 toggle.setAttribute('aria-pressed', String(isActive));
                 if (isActive) {
-                    visibleServices.add(service);
+                    enabledServices.add(service);
                 } else {
-                    visibleServices.delete(service);
+                    enabledServices.delete(service);
                 }
                 renderTable();
             }
@@ -755,19 +754,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         document.querySelector('.show-all-services').onclick = () => {
-            visibleServices = new Set(services);
-            svcContainer.querySelectorAll('.toggle-item').forEach(t => {
-                t.classList.add('active');
-                t.setAttribute('aria-pressed', 'true');
-            });
+            enabledServices = new Set(services);
+            updateServiceToggleStates();
             renderTable();
         };
         document.querySelector('.hide-all-services').onclick = () => {
-            visibleServices.clear();
-            svcContainer.querySelectorAll('.toggle-item').forEach(t => {
-                t.classList.remove('active');
-                t.setAttribute('aria-pressed', 'false');
-            });
+            enabledServices.clear();
+            updateServiceToggleStates();
             renderTable();
         };
         document.querySelector('.show-all-attributes').onclick = () => {
@@ -809,6 +802,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ─── BOOT ─────────────────────────────────
+    updateStaticUi();
     initTheme();
     initMobileFocusControls();
     initToggles();

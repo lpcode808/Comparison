@@ -14,6 +14,11 @@ Interactive comparison table for AI tools in the agentic era. Built on Ethan Mol
 - `playwright.config.js` — runs Python HTTP server on port 8002
 - `package.json` / `pnpm-lock.yaml` — `pnpm test` to run suite
 
+### Fresh Machine Setup
+- `pnpm install`
+- `pnpm exec playwright install` if Playwright browsers are not already installed
+- `pnpm test`
+
 ### Data Model (`app-v3.js`)
 
 ```javascript

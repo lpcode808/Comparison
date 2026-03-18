@@ -10,11 +10,15 @@ Built with vanilla HTML/CSS/JS, no build step, and designed for GitHub Pages dep
    ```bash
    pnpm install
    ```
-2. Run tests:
+2. Install Playwright browsers if this is a fresh machine:
+   ```bash
+   pnpm exec playwright install
+   ```
+3. Run tests:
    ```bash
    pnpm test
    ```
-3. Optional local preview:
+4. Optional local preview:
    ```bash
    python3 -m http.server 8000
    ```

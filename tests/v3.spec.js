@@ -144,13 +144,12 @@ test.describe('Category pill filtering', () => {
         await expect(pill).toHaveClass(/active/);
     });
 
-    test('switching pills updates service toggle button states', async ({ page }) => {
+    test('switching pills does not mutate manual service toggle selection', async ({ page }) => {
         await page.click('[data-category="Chatbot"]');
-        // ChatGPT toggle should be active (visible), Claude Code should not
         const chatgptToggle = page.locator('#service-toggles .toggle-item', { hasText: 'ChatGPT' });
         const claudeCodeToggle = page.locator('#service-toggles .toggle-item', { hasText: 'Claude Code' });
         await expect(chatgptToggle).toHaveClass(/active/);
-        await expect(claudeCodeToggle).not.toHaveClass(/active/);
+        await expect(claudeCodeToggle).toHaveClass(/active/);
     });
 });
 
@@ -521,14 +520,13 @@ test.describe('Combined interactions', () => {
         await page.waitForSelector('tbody tr');
     });
 
-    test('filter by category then search — search overrides category filter', async ({ page }) => {
+    test('filter by category then search — search composes with category filter', async ({ page }) => {
         await page.click('[data-category="Chatbot"]');
         await page.fill('.search-box', 'Claude');
-        // Search replaces visibleServices — all 4 Claude services appear
-        await expect(await serviceCount(page)).toBe(4);
+        await expect(await serviceCount(page)).toBe(1);
         const names = await serviceOrder(page);
         expect(names).toContain('Claude.ai');
-        expect(names).toContain('Claude Code');
+        expect(names).not.toContain('Claude Code');
     });
 
     test('sort persists after category filter', async ({ page }) => {
@@ -554,8 +552,25 @@ test.describe('Combined interactions', () => {
         // Switch to Coding Agent and back to All
         await page.click('[data-category="Coding Agent"]');
         await page.click('[data-category="all"]');
-        // All 9 should be back (category pill resets to all)
-        await expect(await serviceCount(page)).toBe(9);
+        // Manual toggle selection should still apply
+        await expect(await serviceCount(page)).toBe(8);
+    });
+
+    test('search then show all services keeps search results constrained', async ({ page }) => {
+        await page.fill('.search-box', 'Google');
+        await page.click('.show-all-services');
+        await expect(await serviceCount(page)).toBe(2);
+        const names = await serviceOrder(page);
+        expect(names).toContain('Gemini');
+        expect(names).toContain('NotebookLM');
+        expect(names).not.toContain('Claude Code');
+    });
+
+    test('category then show all services keeps category filter active', async ({ page }) => {
+        await page.click('[data-category="Chatbot"]');
+        await page.click('.show-all-services');
+        await expect(await serviceCount(page)).toBe(3);
+        await expect(page.locator('[data-category="Chatbot"]')).toHaveClass(/active/);
     });
 });
 
@@ -565,11 +580,21 @@ test.describe('Edge cases', () => {
         await page.waitForSelector('tbody tr');
     });
 
-    test('hide all services then search — search overrides hidden state', async ({ page }) => {
+    test('hide all services then search stays empty until services are re-enabled', async ({ page }) => {
         await page.click('.hide-all-services');
         await page.fill('.search-box', 'Claude');
-        // Search replaces visibleServices with matches
-        await expect(await serviceCount(page)).toBe(4);
+        await expect(await serviceCount(page)).toBe(0);
+    });
+
+    test('search then manual service toggle still respects active search', async ({ page }) => {
+        await page.fill('.search-box', 'Google');
+        const claudeCodeToggle = page.locator('#service-toggles .toggle-item', { hasText: 'Claude Code' });
+        await claudeCodeToggle.click();
+        await expect(await serviceCount(page)).toBe(2);
+        const names = await serviceOrder(page);
+        expect(names).toContain('Gemini');
+        expect(names).toContain('NotebookLM');
+        expect(names).not.toContain('Claude Code');
     });
 
     test('hide all attributes shows header row but no body attribute rows', async ({ page }) => {
