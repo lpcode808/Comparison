@@ -766,12 +766,12 @@
         <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark mode">🌙 Dark mode</button>
     </div>
     <div class="mobile-view-controls" aria-label="Mobile service focus controls">
-        <button class="mobile-focus-toggle" type="button" aria-pressed="false" aria-label="Enable focused service view">📱 Focus one service</button>
+        <button class="mobile-focus-toggle" type="button" aria-pressed="false" aria-label="Show one service at a time">📱 Single-service view</button>
         <button class="mobile-nav-btn mobile-prev-service" type="button" aria-label="Previous service" disabled>←</button>
         <select class="mobile-service-select" aria-label="Focused service selection"></select>
         <button class="mobile-nav-btn mobile-next-service" type="button" aria-label="Next service" disabled>→</button>
     </div>
-    <p class="mobile-view-hint">Phone tip: focus mode shows one service column at a time.</p>
+    <p class="mobile-view-hint">On phones, single-service view shows one service at a time.</p>
 
     <!-- ── Controls ─────────────────────────────── -->
     <div class="controls">
@@ -783,15 +783,15 @@
                 v3 adds the <strong>Models → Apps → Harnesses</strong> framework and updates to the agentic era.
             </p>
             <div class="instructions-toggle" tabindex="0" role="button" aria-expanded="false">
-                <strong>▶ 🔍 How to use</strong>
+                <strong>▶ 🔍 How to use this</strong>
             </div>
             <div class="instructions-content collapsed">
                 <p>
-                    • Use the <strong>category pills</strong> above to filter by tool type<br>
+                    • Filter by tool type with the <strong>category pills</strong> above<br>
                     • Click any boolean row label (✓/✗) to sort by that capability<br>
-                    • Use the <strong>search box</strong> to find tools by feature or description<br>
-                    • Toggle individual services and attributes on/off below<br>
-                    • <strong>Harness Strength</strong> (●●●●) reflects how autonomously the AI can act
+                    • Use the <strong>search box</strong> to find services by feature, company, or description<br>
+                    • Toggle services and attributes below<br>
+                    • <strong>Harness Strength</strong> (●●●●) reflects how much real work the AI can do for you
                 </p>
             </div>
             <div class="instructions-toggle" tabindex="0" role="button" aria-expanded="false" style="margin-top: 8px;">
@@ -799,11 +799,11 @@
             </div>
             <div class="instructions-content collapsed">
                 <p>
-                    • "Fully autonomous" tools do real work while you watch (or don't)<br>
-                    • Coding agents (Claude Code, Codex) are powerful but require technical knowledge<br>
-                    • Harness quality matters more than model quality for most tasks — Gemini's model is just as smart, but its chatbot harness can't make Excel files<br>
-                    • Google Antigravity (coding agent) and Manus (standalone harness, now Meta) also exist but aren't yet widely used<br>
-                    • GPT-5.2 Pro is available at higher cost tiers — extremely capable for complex analytical work<br>
+                    • "Fully autonomous" tools can take multi-step actions with much less hand-holding<br>
+                    • Coding agents (Claude Code, Codex) are powerful, but they usually need technical setup and judgment<br>
+                    • Harness quality often matters more than raw model quality for everyday work — the product wrapper determines whether the AI can browse, edit files, and create outputs for you<br>
+                    • Other agents are emerging too, but this table stays focused on tools with clearer mainstream usage right now<br>
+                    • Higher-cost tiers can unlock stronger models or longer thinking budgets<br>
                     • Suggestions welcome — fork it and make it better!
                 </p>
             </div>
@@ -814,8 +814,8 @@
             <h3>
                 🏪 Services
                 <div class="control-actions">
-                    <button class="show-all-services">Show All</button>
-                    <button class="hide-all-services">Hide All</button>
+                    <button class="show-all-services">Show all</button>
+                    <button class="hide-all-services">Hide all</button>
                 </div>
             </h3>
             <div class="toggle-list" id="service-toggles"><!-- populated by JS --></div>
@@ -826,8 +826,8 @@
             <h3>
                 🍱 Attributes
                 <div class="control-actions">
-                    <button class="show-all-attributes">Show All</button>
-                    <button class="hide-all-attributes">Hide All</button>
+                    <button class="show-all-attributes">Show all</button>
+                    <button class="hide-all-attributes">Hide all</button>
                 </div>
             </h3>
             <div class="toggle-list" id="attribute-toggles"><!-- populated by JS --></div>
@@ -835,8 +835,8 @@
 
         <!-- Search + extra notes -->
         <div class="control-group">
-            <h3>👓 Search</h3>
-            <input type="text" class="search-box" placeholder="Search tools, features, companies…" aria-label="Search AI tools">
+            <h3>👓 Search tools</h3>
+            <input type="text" class="search-box" placeholder="Search services, features, or companies…" aria-label="Search AI tools">
 
             <div class="instructions-toggle collapsed" tabindex="0" role="button" aria-expanded="false" style="margin-top: 6px;">
                 <strong>▶ 🖼️ Image generation (standalone)</strong>
@@ -878,7 +878,7 @@
     </div>
 
     <!-- ── Table ─────────────────────────────────── -->
-    <p class="table-scroll-hint">↔ Swipe horizontally to compare all services</p>
+    <p class="table-scroll-hint">↔ Swipe to compare more services</p>
     <div class="table-container" tabindex="0" role="region" aria-label="AI tool comparison table">
         <table>
             <thead></thead>
@@ -887,7 +887,7 @@
     </div>
     </main>
 
-    <footer class="timestamp">Updated: 2026-02-24 &nbsp;|&nbsp; <a href="v1/" style="color: inherit;">← 2025 version</a></footer>
+    <footer class="timestamp">Updated: 2026-03-18 &nbsp;|&nbsp; <a href="v1/" style="color: inherit;">← 2025 version</a></footer>
 
     <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
     <script src="app-v3.js"></script>

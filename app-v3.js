@@ -79,7 +79,7 @@ const modelData = [
         generatesImages: "DALL-E",
         generatesVideo: false,
         readsDocs: true,
-        superpower: "Most complete all-in-one chatbot; creates real Excel and PowerPoint files; Shopping Research is underrated"
+        superpower: "Most full-featured general-purpose chatbot in this table; strong document output, including Excel and PowerPoint files; Shopping Research is easy to overlook"
     },
     {
         service: "Claude.ai",
@@ -101,7 +101,7 @@ const modelData = [
         generatesImages: false,
         generatesVideo: false,
         readsDocs: true,
-        superpower: "Best writing quality; gateway to Claude Code and Cowork via Claude Desktop app"
+        superpower: "Strongest writing experience in this table; gateway to Claude Code and Cowork in Anthropic's broader ecosystem"
     },
     {
         service: "Gemini",
@@ -123,7 +123,7 @@ const modelData = [
         generatesImages: "Imagen-3",
         generatesVideo: "Veo 3.1",
         readsDocs: true,
-        superpower: "Best image & video generation bundled; model quality matches rivals, but harness is significantly weaker"
+        superpower: "Strongest bundled image and video creation in this table; the model is competitive, but the chatbot workflow is lighter than the top harnesses"
     },
     {
         service: "Claude Code",
@@ -145,7 +145,7 @@ const modelData = [
         generatesImages: false,
         generatesVideo: false,
         readsDocs: true,
-        superpower: "Build and launch complete apps; writes, runs, tests code for hours; can set up Stripe payments and deploy sites"
+        superpower: "Can build and ship substantial apps; writes, runs, and tests code over long sessions; strongest in end-to-end dev workflows"
     },
     {
         service: "OpenAI Codex",
@@ -167,7 +167,7 @@ const modelData = [
         generatesImages: false,
         generatesVideo: false,
         readsDocs: true,
-        superpower: "OpenAI's full coding agent: access to codebase, terminal, write/run/test cycle in cloud environment"
+        superpower: "OpenAI's cloud coding agent: access to your codebase plus a managed write/run/test loop"
     },
     {
         service: "Claude Cowork",
@@ -189,7 +189,7 @@ const modelData = [
         generatesImages: false,
         generatesVideo: false,
         readsDocs: true,
-        superpower: "Claude Code for non-coders: works on local files and browser in secure VM; now with plugins for Google Workspace, Slack, and DocuSign"
+        superpower: "Agentic assistant for non-coders: works across local files, browser tasks, and connected workplace tools"
     },
     {
         service: "Claude for Excel",
@@ -211,7 +211,7 @@ const modelData = [
         generatesImages: false,
         generatesVideo: false,
         readsDocs: true,
-        superpower: "Junior analyst inside Excel; reads multi-tab workbooks, explains calculations with cell citations, edits pivot tables and charts"
+        superpower: "Excel-native analyst: reads multi-tab workbooks, explains calculations with cell citations, and updates pivots and charts"
     },
     {
         service: "NotebookLM",
@@ -233,7 +233,7 @@ const modelData = [
         generatesImages: false,
         generatesVideo: false,
         readsDocs: true,
-        superpower: "Best tool for document sense-making; creates AI podcasts, slides, and interactive knowledge bases from your sources"
+        superpower: "Excellent for document sense-making; turns source sets into summaries, audio overviews, slides, and shareable briefs"
     },
     {
         service: "Perplexity",
@@ -255,7 +255,7 @@ const modelData = [
         generatesImages: true,
         generatesVideo: false,
         readsDocs: true,
-        superpower: "Best cited web research with source verification; pick your underlying AI model; Comet agent available"
+        superpower: "Strong cited web research with source verification; lets you choose the underlying model; Comet agent available"
     }
 ];
 
@@ -436,15 +436,15 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileFocusToggle.setAttribute('aria-pressed', String(mobileFocusMode));
         mobileFocusToggle.setAttribute(
             'aria-label',
-            mobileFocusMode ? 'Disable focused service view' : 'Enable focused service view'
+            mobileFocusMode ? 'Show the full comparison table' : 'Show one service at a time'
         );
-        mobileFocusToggle.textContent = mobileFocusMode ? '📱 Focus on' : '📱 Focus one service';
+        mobileFocusToggle.textContent = mobileFocusMode ? '📊 Full comparison' : '📱 Single-service view';
 
         mobileServiceSelect.innerHTML = '';
         if (baseVisible.length === 0) {
             const option = document.createElement('option');
             option.value = '';
-            option.textContent = 'No visible services';
+            option.textContent = 'No services match current filters';
             mobileServiceSelect.appendChild(option);
             mobileServiceSelect.disabled = true;
             mobilePrevService.disabled = true;
