@@ -63,7 +63,7 @@ const modelData = [
         service: "ChatGPT",
         company: "OpenAI",
         category: "Chatbot",
-        underlyingModel: "GPT-5.2 Thinking",
+        underlyingModel: "GPT-5.2",
         cost: "$20/mo",
         technicalLevel: "Beginner",
         autonomy: "Semi-autonomous",
@@ -73,19 +73,19 @@ const modelData = [
         deepResearch: true,
         executesCode: true,
         managesFiles: false,
-        createsDocuments: true,
+        createsDocuments: false,
         seesImages: true,
         seesVideo: "Live Mode",
-        generatesImages: "DALL-E",
+        generatesImages: "ChatGPT Images",
         generatesVideo: false,
         readsDocs: true,
-        superpower: "Most full-featured general-purpose chatbot in this table; strong document output, including Excel and PowerPoint files; Shopping Research is easy to overlook"
+        superpower: "General-purpose chatbot with web search, deep research, projects, file analysis, and image generation in one place"
     },
     {
         service: "Claude.ai",
         company: "Anthropic",
         category: "Chatbot",
-        underlyingModel: "Claude Opus 4.6",
+        underlyingModel: "Claude Opus 4.6 / Sonnet 4.6",
         cost: "$20/mo",
         technicalLevel: "Beginner",
         autonomy: "Semi-autonomous",
@@ -101,7 +101,7 @@ const modelData = [
         generatesImages: false,
         generatesVideo: false,
         readsDocs: true,
-        superpower: "Strongest writing experience in this table; gateway to Claude Code and Cowork in Anthropic's broader ecosystem"
+        superpower: "Strong writing and analysis in the Claude app, with file creation and access to Anthropic's broader tool ecosystem"
     },
     {
         service: "Gemini",
@@ -120,16 +120,16 @@ const modelData = [
         createsDocuments: false,
         seesImages: true,
         seesVideo: true,
-        generatesImages: "Imagen-3",
-        generatesVideo: "Veo 3.1",
+        generatesImages: "Nano Banana Pro",
+        generatesVideo: "Veo 3.1 Fast",
         readsDocs: true,
-        superpower: "Strongest bundled image and video creation in this table; the model is competitive, but the chatbot workflow is lighter than the top harnesses"
+        superpower: "Pairs Deep Research with Google's bundled image and video toolkit"
     },
     {
         service: "Claude Code",
         company: "Anthropic",
         category: "Coding Agent",
-        underlyingModel: "Claude Opus 4.6",
+        underlyingModel: "Claude Sonnet 4 / Opus 4",
         cost: "$20/mo+",
         technicalLevel: "Advanced",
         autonomy: "Fully autonomous",
@@ -145,13 +145,13 @@ const modelData = [
         generatesImages: false,
         generatesVideo: false,
         readsDocs: true,
-        superpower: "Can build and ship substantial apps; writes, runs, and tests code over long sessions; strongest in end-to-end dev workflows"
+        superpower: "Terminal-first coding agent that can plan, edit, run, and test across long development sessions"
     },
     {
         service: "OpenAI Codex",
         company: "OpenAI",
         category: "Coding Agent",
-        underlyingModel: "GPT-5.3-Codex",
+        underlyingModel: "GPT-5-Codex",
         cost: "$20/mo+",
         technicalLevel: "Advanced",
         autonomy: "Fully autonomous",
@@ -167,13 +167,13 @@ const modelData = [
         generatesImages: false,
         generatesVideo: false,
         readsDocs: true,
-        superpower: "OpenAI's cloud coding agent: access to your codebase plus a managed write/run/test loop"
+        superpower: "Coding agent for local or cloud workflows, with isolated task runs, code review, and GitHub integration"
     },
     {
         service: "Claude Cowork",
         company: "Anthropic",
         category: "Work Agent",
-        underlyingModel: "Claude Opus 4.6",
+        underlyingModel: "Claude models + tools",
         cost: "$20/mo+",
         technicalLevel: "Intermediate",
         autonomy: "Fully autonomous",
@@ -189,13 +189,13 @@ const modelData = [
         generatesImages: false,
         generatesVideo: false,
         readsDocs: true,
-        superpower: "Agentic assistant for non-coders: works across local files, browser tasks, and connected workplace tools"
+        superpower: "Anthropic's workplace agent surface for connected tools, files, and multi-step tasks"
     },
     {
         service: "Claude for Excel",
         company: "Anthropic",
         category: "Work Agent",
-        underlyingModel: "Claude Opus 4.6",
+        underlyingModel: "Claude Sonnet 4.6",
         cost: "$20/mo+",
         technicalLevel: "Beginner",
         autonomy: "Semi-autonomous",
@@ -211,13 +211,13 @@ const modelData = [
         generatesImages: false,
         generatesVideo: false,
         readsDocs: true,
-        superpower: "Excel-native analyst: reads multi-tab workbooks, explains calculations with cell citations, and updates pivots and charts"
+        superpower: "Spreadsheet-focused Claude workflow for formulas, charts, analysis, and presentation-ready outputs"
     },
     {
         service: "NotebookLM",
         company: "Google",
         category: "Research Tool",
-        underlyingModel: "Gemini 3.1 Pro",
+        underlyingModel: "Gemini models",
         cost: "Free tier",
         technicalLevel: "Beginner",
         autonomy: "Semi-autonomous",
@@ -229,11 +229,11 @@ const modelData = [
         managesFiles: false,
         createsDocuments: true,
         seesImages: true,
-        seesVideo: false,
+        seesVideo: "YouTube",
         generatesImages: false,
-        generatesVideo: false,
+        generatesVideo: "Video Overviews",
         readsDocs: true,
-        superpower: "Excellent for document sense-making; turns source sets into summaries, audio overviews, slides, and shareable briefs"
+        superpower: "Turns dense sources into chat, audio overviews, video overviews, and shareable study materials"
     },
     {
         service: "Perplexity",
@@ -253,9 +253,9 @@ const modelData = [
         seesImages: true,
         seesVideo: false,
         generatesImages: true,
-        generatesVideo: false,
+        generatesVideo: true,
         readsDocs: true,
-        superpower: "Strong cited web research with source verification; lets you choose the underlying model; Comet agent available"
+        superpower: "Cited research assistant with model choice, Deep Research, and the Comet browsing workflow"
     }
 ];
 
