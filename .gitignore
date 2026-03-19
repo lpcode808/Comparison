@@ -5,11 +5,4 @@ test-results/
 *.swp
 
 # Local notes, planning artifacts, and legacy snapshots kept out of GitHub
-AGENT-GUIDE.md
-Comparison-V2/
-app.js
-export.md
-learning.md
-molick 2026-02.md
-planningDocs/
-v3.html
+_local/
