@@ -73,7 +73,7 @@ const modelData = [
         deepResearch: true,
         executesCode: true,
         managesFiles: false,
-        createsDocuments: false,
+        createsDocuments: true,
         seesImages: true,
         seesVideo: "Live Mode",
         generatesImages: "ChatGPT Images",
@@ -129,7 +129,7 @@ const modelData = [
         service: "Claude Code",
         company: "Anthropic",
         category: "Coding Agent",
-        underlyingModel: "Claude Sonnet 4 / Opus 4",
+        underlyingModel: "Claude Sonnet 4.6 / Opus 4.6",
         cost: "$20/mo+",
         technicalLevel: "Advanced",
         autonomy: "Fully autonomous",
@@ -253,7 +253,7 @@ const modelData = [
         seesImages: true,
         seesVideo: false,
         generatesImages: true,
-        generatesVideo: true,
+        generatesVideo: false,
         readsDocs: true,
         superpower: "Cited research assistant with model choice, Deep Research, and the Comet browsing workflow"
     }
